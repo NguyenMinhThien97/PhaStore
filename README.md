@@ -1,4 +1,5 @@
-# Back-end:
+# Back-end: pha-admin
+Apply technology: Java 8, Spring Boot 2.5.1, Gradle, JPA, MySQL
 
 ## Install apps
 
@@ -8,7 +9,8 @@
 
 
 
-# Front-end:
+# Front-end: ui-pha-admin
+Apply technology: ReactJs, Redux
 
 ## Install apps
 
