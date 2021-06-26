@@ -16,7 +16,7 @@ USE `phastore`;
 --
 
 CREATE TABLE `common` (
-  `IdCommon` int(11) NOT NULL AUTO_INCREMENT,
+  `IdCommon` int(11) NOT NULL,
   `CommonCode` varchar(9) COLLATE utf8mb4_german2_ci NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
   `Enabled` double NOT NULL,
@@ -29,7 +29,11 @@ CREATE TABLE `common` (
 --
 ALTER TABLE `common`
   ADD PRIMARY KEY (`IdCommon`);
-  
-CREATE UNIQUE INDEX idx_id
-ON `common` (IdCommon);
 
+
+--
+-- AUTO_INCREMENT cho bảng `common`
+--
+ALTER TABLE `common`
+  MODIFY `IdCommon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+COMMIT;
