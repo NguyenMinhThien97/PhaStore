@@ -35,8 +35,8 @@ public class CommonController {
     }
 
     @PostMapping(value="/getLabel")
-    public ResponseEntity<List<HashMap>> findLabel(@RequestBody LabelInput[] labelInputs){
-        List<HashMap> outParam = labelService.findByLabelCodes(Arrays.asList(labelInputs));
+    public ResponseEntity<List<HashMap>> findLabel(@RequestBody Map<String, List<LabelInput>> labelInputs){
+        List<HashMap> outParam = labelService.findByLabelCodes(labelInputs.get("labels"));
         return new ResponseEntity<>(outParam, HttpStatus.OK);
     }
 
