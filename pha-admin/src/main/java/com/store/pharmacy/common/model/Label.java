@@ -27,7 +27,7 @@ public class Label implements Serializable {
     private boolean enabled;
 
     @Column(name="createdBy")
-    private LocalDate createdBy;
+    private String createdBy;
 
     @Column(name="createdAt")
     private LocalDate createdAt;
