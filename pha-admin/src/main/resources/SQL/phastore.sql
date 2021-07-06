@@ -113,3 +113,38 @@ ALTER TABLE `message`
 ALTER TABLE `common`
   MODIFY `IdCommon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
+
+CREATE TABLE `category` (
+  `CategoryId` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
+  `CategoryName` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
+  `Enabled` tinyint(1) NOT NULL,
+  `Description` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `CreatedBy` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `CreatedAt` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `UpdatedBy` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `UpdatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`CategoryId`, `CategoryName`, `Enabled`, `Description`, `CreatedBy`, `CreatedAt`, `UpdatedBy`, `UpdatedAt`) VALUES
+('CAT-01', 'Tri gut, xuong khop', 1, 'Tri gut, xuong khop', NULL, '2021-07-06 17:03:50', NULL, NULL),
+('CAT-02', 'Tri benh phu khoa', 1, 'Tri benh phu khoa', NULL, '2021-07-06 17:05:11', NULL, '2021-07-06 17:32:33'),
+('CAT-03', 'Tri benh da lieu', 1, '', NULL, '2021-07-06 17:11:02', NULL, '2021-07-06 17:30:20');
+
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`CategoryId`);
+
+--
+
+-- --------------------------------------------------------
