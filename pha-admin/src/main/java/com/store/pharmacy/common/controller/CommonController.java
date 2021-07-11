@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("pharmacy/common")
+@RequestMapping("/common")
 @CrossOrigin(origins = "*")
 public class CommonController {
     @Autowired
