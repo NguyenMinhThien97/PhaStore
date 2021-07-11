@@ -1,4 +1,4 @@
-package com.store.pharmacy.validator;
+package com.store.pharmacy.Category.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -8,7 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.store.pharmacy.model.CategoryDTO;
+import com.store.pharmacy.Category.model.CategoryDTO;
 import com.store.pharmacy.utils.ExecContext;
 
 @Component
@@ -30,8 +30,8 @@ public class CategoryValidator implements Validator {
 		 * hardcode true for isPost and false for isPatch when testing post.
 		 * hardcode true for isPatch and false for isPost when testing patch.
 		 */
-		boolean isPost = execContext.isPostRequest();
-//		boolean isPost = true;
+		//boolean isPost = execContext.isPostRequest();
+		boolean isPost = true;
 		boolean isPatch = execContext.isPatchRequest();
 //		boolean isPatch = true;
 		if (isPost || isPatch && categoryDTO.getCategoryName() != null) {

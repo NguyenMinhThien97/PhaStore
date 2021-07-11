@@ -112,7 +112,6 @@ ALTER TABLE `message`
 --
 ALTER TABLE `common`
   MODIFY `IdCommon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-COMMIT;
 
 -- --------------------------------------------------------
 
@@ -146,5 +145,5 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`CategoryId`);
 
 --
-
+COMMIT;
 -- --------------------------------------------------------
