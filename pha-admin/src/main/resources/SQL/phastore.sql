@@ -77,7 +77,22 @@ CREATE TABLE `message` (
 INSERT INTO `message` (`MessageCode`, `Text`, `Enabled`, `CreatedBy`, `CreatedAt`) VALUES
 ('MSG0001', 'Quá trình lưu gặp lỗi.', 1, 'MThien', '2021-06-28 02:02:22'),
 ('MSG0002', 'Lưu thành công', 1, 'MThien', '2021-06-28 02:02:22');
-
+('MSG0003', 'Phone Number entered is invalid.', 1, 'xphung', '2021-07-13 19:50:25'),
+('MSG0004', 'Phone Number is required attribute when adding an User Information.', 1, 'xphung', '2021-07-13 19:50:25'),
+('MSG0005', 'First Name is required attribute when adding/updating an User Information.', 1, 'xphung', '2021-07-13 19:50:25'),
+('MSG0006', 'Last Name is required attribute when adding/updating an User Information.', 1, 'xphung', '2021-07-13 19:50:25'),
+('MSG0007', 'You entered a date which is in the future.', 1, 'xphung', '2021-07-13 19:50:25'),
+('MSG0008', 'User with entered Email Id: {0} already exists.', 1, 'xphung', '2021-07-13 19:50:25'),
+('MSG0009', 'Email entered is invalid.', 1, 'xphung', '2021-07-13 19:50:25'),
+('MSG0010', 'User with entered user name: {0} already exists.', 1, 'xphung', '2021-07-13 19:50:25'),
+('MSG0011', 'No user found with user id: {0}.', 1, 'xphung', '2021-07-13 19:50:25'),
+('MSG0012', 'Category Id is required attribute when adding a Category Information.', 1, 'xphung', '2021-07-13 19:50:25'),
+('MSG0013', 'Category with entered Category Id: {0} already exists.', 1, 'xphung', '2021-07-13 19:53:55'),
+('MSG0014', 'Category Name is required attribute when adding/updating a Category Information.', 1, 'xphung', '2021-07-13 19:53:55'),
+('MSG0015', 'No category found with category id: {0}.', 1, 'xphung', '2021-07-13 19:53:55'),
+('MSG0016', 'No Data Found for Role Name : {0}.', 1, 'xphung', '2021-07-13 19:53:55'),
+('MSG0017', 'Role Name is required attribute when adding an User Information.', 1, 'xphung', '2021-07-13 19:53:55'),
+('MSG0018', 'Date of Birth is required attribute when adding an User Information.', 1, 'xphung', '2021-07-13 21:02:17');
 --
 -- Chỉ mục cho các bảng đã đổ
 --
@@ -120,7 +135,7 @@ ALTER TABLE `common`
 --
 
 CREATE TABLE `category` (
-  `CategoryId` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
+  `CategoryId` varchar(20) COLLATE utf8mb4_german2_ci NOT NULL,
   `CategoryName` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
   `Enabled` tinyint(1) NOT NULL,
   `Description` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,

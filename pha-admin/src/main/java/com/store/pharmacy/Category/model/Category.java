@@ -23,7 +23,7 @@ public class Category implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "CategoryId", length = 255, nullable = false)
+	@Column(name = "CategoryId", length = 20, nullable = false)
 	private String categoryId;
 
 	@Column(name = "CategoryName", length = 255, nullable = false)
