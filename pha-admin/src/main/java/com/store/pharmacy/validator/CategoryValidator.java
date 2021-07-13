@@ -35,10 +35,10 @@ public class CategoryValidator implements Validator {
 		boolean isPatch = execContext.isPatchRequest();
 //		boolean isPatch = true;
 		if (isPost || isPatch && categoryDTO.getCategoryName() != null) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "categoryName", "categoryName.empty");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "categoryName", "MSG0014");
 		}
 		if (isPost) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "categoryId", "categoryId.empty");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "categoryId", "MSG0012");
 		}
 	}
 }

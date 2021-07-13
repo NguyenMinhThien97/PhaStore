@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.store.pharmacy.model.Category;
@@ -15,12 +14,10 @@ import com.store.pharmacy.exception.DuplicateDataException;
 import com.store.pharmacy.repository.CategoryRepository;
 import com.store.pharmacy.service.CategoryService;
 import com.store.pharmacy.utils.ExecContext;
+import com.store.pharmacy.utils.Utils;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-
-	@Value("${app.timeZone}")
-	private String timeZone;
 
 	@Autowired
 	private ExecContext execContext;
@@ -36,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 			category.setDescription(categoryDTO.getDescription().trim());
 		}
 		category.setCategoryName(categoryDTO.getCategoryName());
-		category.setCreateAt(LocalDateTime.now(ZoneId.of(timeZone)));
+		category.setCreateAt(LocalDateTime.now(ZoneId.of(Utils.getTimeZone())));
 		if (execContext.getUserId() != null && !execContext.getUserId().isEmpty()) {
 			category.setCreateBy(execContext.getUserId());
 		}
@@ -54,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public CategoryDTO findCategory(String categoryId) {
 		Category category = categoryRepository.findById(categoryId).orElse(null);
 		if (category == null) {
-			throw new DataNotFoundException("no.category.exists", new Object[] { categoryId });
+			throw new DataNotFoundException("MSG0015", new Object[] { categoryId });
 		}
 		CategoryDTO categoryDTO = new CategoryDTO();
 		categoryDTO.setCategoryId(categoryId);
@@ -86,21 +83,21 @@ public class CategoryServiceImpl implements CategoryService {
 			category.setUpdateBy(execContext.getUserId());
 		}
 		categoryDTO.setCategoryId(category.getCategoryId());
-		category.setUpdateAt(LocalDateTime.now(ZoneId.of(timeZone)));
+		category.setUpdateAt(LocalDateTime.now(ZoneId.of(Utils.getTimeZone())));
 		categoryRepository.save(category);
 	}
 
 	@Override
 	public void checkIfDuplicatedCategory(String categoryId) {
 		if (categoryRepository.findCategoryByCategoryId(categoryId) != null) {
-			throw new DuplicateDataException("categoryId.duplicate", new Object[] { categoryId });
+			throw new DuplicateDataException("MSG0013", new Object[] { categoryId });
 		}
 	}
 
 	@Override
 	public void checkIfCategoryExits(String categoryId) {
 		if (categoryRepository.findCategoryByCategoryId(categoryId) == null) {
-			throw new DataNotFoundException("no.category.exists", new Object[] { categoryId });
+			throw new DataNotFoundException("MSG0015", new Object[] { categoryId });
 		}
 	}
 }
