@@ -1,8 +1,8 @@
-package com.store.pharmacy.repository;
+package com.store.pharmacy.Category.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.store.pharmacy.model.Category;
+import com.store.pharmacy.Category.model.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, String> {
 

@@ -1,4 +1,4 @@
-package com.store.pharmacy.model;
+package com.store.pharmacy.Category.model;
 
 import org.springframework.hateoas.RepresentationModel;
 

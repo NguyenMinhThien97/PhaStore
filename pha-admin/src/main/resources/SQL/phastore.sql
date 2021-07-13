@@ -16,8 +16,8 @@ USE `phastore`;
 --
 
 CREATE TABLE `common` (
-  `IdCommon` int(11) NOT NULL,
   `CommonCode` varchar(9) COLLATE utf8mb4_german2_ci NOT NULL,
+  `SequenceNo` int(3) NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
   `Enabled` double NOT NULL DEFAULT '1',
   `CreatedBy` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
@@ -28,9 +28,9 @@ CREATE TABLE `common` (
 -- Đang đổ dữ liệu cho bảng `common`
 --
 
-INSERT INTO `common` (`IdCommon`, `CommonCode`, `Name`, `Enabled`, `CreatedBy`, `CreatedAt`) VALUES
-(1, '1334', 'Pass', 1, 'MThien', '2021-06-24 10:41:27'),
-(2, '1334', 'Fail', 1, 'MThien', '2021-06-24 10:41:43');
+INSERT INTO `common` (`CommonCode`, `SequenceNo`, `Name`, `Enabled`, `CreatedBy`, `CreatedAt`) VALUES
+('1334', 1, 'Pass', 0, 'MThien', '2021-06-24 10:41:27'),
+('1334', 2, 'Fail', 1, 'MThien', '2021-06-24 10:41:27');
 
 -- --------------------------------------------------------
 
@@ -101,7 +101,7 @@ INSERT INTO `message` (`MessageCode`, `Text`, `Enabled`, `CreatedBy`, `CreatedAt
 -- Chỉ mục cho bảng `common`
 --
 ALTER TABLE `common`
-  ADD PRIMARY KEY (`IdCommon`),
+  ADD PRIMARY KEY (`CommonCode`,`SequenceNo`),
   ADD KEY `CommonCode` (`CommonCode`);
 
 --
@@ -127,7 +127,6 @@ ALTER TABLE `message`
 --
 ALTER TABLE `common`
   MODIFY `IdCommon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-COMMIT;
 
 -- --------------------------------------------------------
 
@@ -161,5 +160,5 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`CategoryId`);
 
 --
-
+COMMIT;
 -- --------------------------------------------------------

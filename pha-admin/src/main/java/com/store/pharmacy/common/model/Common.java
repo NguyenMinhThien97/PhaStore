@@ -13,17 +13,17 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Table(name = "Common")
+@IdClass(CommonId.class)
 public class Common implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name="idCommon")
-    private long idCommon;
-
     @Column(name="commonCode")
     private String commonCode;
+
+    @Id
+    @Column(name="SequenceNo")
+    private int SequenceNo;
 
     @Column(name="name")
     private String name;

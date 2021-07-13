@@ -1,4 +1,4 @@
-package com.store.pharmacy.controller;
+package com.store.pharmacy.Category.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.store.pharmacy.model.CategoryDTO;
-import com.store.pharmacy.service.CategoryService;
-import com.store.pharmacy.validator.CategoryValidator;
+import com.store.pharmacy.Category.model.CategoryDTO;
+import com.store.pharmacy.Category.service.CategoryService;
+import com.store.pharmacy.Category.validator.CategoryValidator;
 
 @RestController
 @RequestMapping("/categories")
