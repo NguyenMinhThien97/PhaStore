@@ -23,7 +23,7 @@ public class Common implements Serializable {
 
     @Id
     @Column(name="SequenceNo")
-    private int SequenceNo;
+    private int sequenceNo;
 
     @Column(name="name")
     private String name;
