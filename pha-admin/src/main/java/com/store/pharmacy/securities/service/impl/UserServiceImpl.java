@@ -72,11 +72,11 @@ public class UserServiceImpl implements UserService {
 			if (common == null) {
 				throw new DataNotFoundException("MSG0016", new Object[] { userDTO.getRoleName().trim() });
 			}
-			if (user.getSequenceNo() != common.getSequenceNo()) {
-				user.setSequenceNo(common.getSequenceNo());
+			if (user.getRoleCode() != common.getSequenceNo()) {
+				user.setRoleCode(common.getSequenceNo());
 			} else {
 				common = commonRepository.findByCommonCodeAndSequenceNo(PharmacyConstant.ROLE_USER,
-						user.getSequenceNo());
+						user.getRoleCode());
 				if (common == null) {
 					throw new DataNotFoundException("MSG0016", new Object[] { userDTO.getRoleName().trim() });
 				}
@@ -171,9 +171,9 @@ public class UserServiceImpl implements UserService {
 			userDTO.setAddress(user.getAddress());
 		}
 		Common common = commonRepository.findByCommonCodeAndSequenceNo(PharmacyConstant.ROLE_USER,
-				user.getSequenceNo());
+				user.getRoleCode());
 		if (common == null) {
-			throw new DataNotFoundException("MSG0019", new Object[] { user.getSequenceNo() });
+			throw new DataNotFoundException("MSG0019", new Object[] { user.getRoleCode() });
 		}
 		userDTO.setRoleName(common.getName());
 		return userDTO;
@@ -184,7 +184,7 @@ public class UserServiceImpl implements UserService {
 		user.setUserId(userId);
 		user.setUserName(userName);
 		user.setPassword(password);
-		user.setSequenceNo(sequenceNo);
+		user.setRoleCode(sequenceNo);
 		user.setEmail(userDTO.getEmail());
 		user.setAddress(userDTO.getAddress());
 		user.setLastName(userDTO.getLastName());

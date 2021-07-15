@@ -27,8 +27,8 @@ public class User implements Serializable {
 	@Column(name = "UserId", length = 11, nullable = false)
 	private String userId;
 
-	@Column(name = "SequenceNo", length = 3, nullable = false)
-	private int sequenceNo;
+	@Column(name = "RoleCode", length = 3, nullable = false)
+	private int roleCode;
 
 	@Column(name = "FirstName", length = 255, nullable = false)
 	private String firstName;
