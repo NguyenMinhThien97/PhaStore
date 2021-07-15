@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 		LocalDate dateOfBirth = userDTO.getDateOfBirth();
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(dateOfBirth.getYear());
-		stringBuilder.append(StringUtils.leftPad(String.valueOf(dateOfBirth.getMonthValue()), 3, "0"));
+		stringBuilder.append(StringUtils.leftPad(String.valueOf(dateOfBirth.getMonthValue()), 2, "0"));
 		stringBuilder.append(StringUtils.leftPad(String.valueOf(dateOfBirth.getDayOfMonth()), 2, "0"));
 		String password = passwordEncoder.encode(stringBuilder.toString());
 		String userId = userRepository.generateUserId();
@@ -60,6 +60,90 @@ public class UserServiceImpl implements UserService {
 		User user = mapUserDTOToUser(userDTO, userId, common.getSequenceNo(), userName.trim(), password);
 		userRepository.saveAndFlush(user);
 		return userId;
+	}
+
+	@Override
+	public void update(String userId, UserDTO userDTO) {
+		User user = userRepository.findById(userId).orElse(null);
+
+		if (userDTO.getRoleName() != null) {
+			Common common = commonRepository.findByCommonCodeAndName(PharmacyConstant.ROLE_USER,
+					userDTO.getRoleName().trim());
+			if (common == null) {
+				throw new DataNotFoundException("MSG0016", new Object[] { userDTO.getRoleName().trim() });
+			}
+			if (user.getSequenceNo() != common.getSequenceNo()) {
+				user.setSequenceNo(common.getSequenceNo());
+			} else {
+				common = commonRepository.findByCommonCodeAndSequenceNo(PharmacyConstant.ROLE_USER,
+						user.getSequenceNo());
+				if (common == null) {
+					throw new DataNotFoundException("MSG0016", new Object[] { userDTO.getRoleName().trim() });
+				}
+				userDTO.setRoleName(common.getName());
+			}
+		}
+
+		if (userDTO.getFirstName() != null) {
+			user.setFirstName(userDTO.getFirstName());
+		} else {
+			userDTO.setFirstName(user.getFirstName());
+		}
+
+		if (userDTO.getLastName() != null) {
+			user.setLastName(userDTO.getLastName());
+		} else {
+			userDTO.setLastName(user.getLastName());
+		}
+
+		if (userDTO.getUserName() != null) {
+			user.setUserName(userDTO.getUserName());
+		} else {
+			userDTO.setUserName(user.getUserName());
+		}
+
+		if (userDTO.getEmail() != null) {
+			user.setEmail(userDTO.getEmail());
+		} else {
+			userDTO.setEmail(user.getEmail());
+		}
+
+		if (userDTO.getDateOfBirth() != null) {
+			user.setDateOfBirth(userDTO.getDateOfBirth());
+		} else {
+			userDTO.setDateOfBirth(user.getDateOfBirth());
+		}
+
+		if (userDTO.getPhoneNumber() != null) {
+			user.setPhoneNumber(userDTO.getPhoneNumber());
+		} else {
+			userDTO.setPhoneNumber(user.getPhoneNumber());
+		}
+
+		if (userDTO.getAddress() != null) {
+			user.setAddress(userDTO.getAddress());
+		} else {
+			userDTO.setAddress(user.getAddress());
+		}
+
+		if (userDTO.getEnabled() != null) {
+			user.setEnabled(userDTO.getEnabled());
+		} else {
+			userDTO.setEnabled(user.isEnabled());
+		}
+
+		if (userDTO.getNewPassword() != null && userDTO.getCurrentPassword() != null) {
+			boolean isPasswordMatches = passwordEncoder.matches(userDTO.getCurrentPassword(), user.getPassword());
+			if (isPasswordMatches) {
+				user.setPassword(passwordEncoder.encode(userDTO.getNewPassword()));
+			}
+		}
+
+		if (execContext.getUserId() != null) {
+			user.setUpdatedBy(execContext.getUserId());
+		}
+		user.setUpdatedAt(LocalDateTime.now(ZoneId.of(Utils.getTimeZone())));
+		userRepository.save(user);
 	}
 
 	@Override
@@ -138,5 +222,12 @@ public class UserServiceImpl implements UserService {
 	public void checkIfDuplicatedUser(UserDTO userDTO) {
 		checkIfDuplicatedUserEmail(userDTO.getEmail());
 		checkIfDuplicatedUserName(userDTO.getUserName());
+	}
+
+	@Override
+	public void checkIfUserExits(String userId) {
+		if (userRepository.findById(userId).orElse(null) == null) {
+			throw new DataNotFoundException("MSG0011", new Object[] { userId });
+		}
 	}
 }

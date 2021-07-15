@@ -43,7 +43,7 @@ SET @count = 0;
 SET @userName = (SELECT CONCAT('PHA-US-', firstName, lastName));
 label1: LOOP
 SET @isExitedUserName = (SELECT UserName FROM User WHERE UserName = @userName);
-     IF @isExitedUserName != '' THEN
+     IF ISNULL(NULLIF(@isExitedUserName,'')) = 0 THEN
      SET @count = @count + 1;
      SET @userName = (SELECT CONCAT('PHA-US-', firstName, lastName, @count));
      SET @isExitedUserName = @userName;
@@ -172,10 +172,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`UserId`, `SequenceNo`, `FirstName`, `LastName`, `UserName`, `Email`, `DateOfBirth`, `PhoneNumber`, `Address`, `Password`, `Enabled`, `CreatedBy`, `CreatedAt`, `UpdatedBy`, `UpdatedAt`) VALUES
-('20210714001', 2, 'Jisoo', 'Kim', 'PHA-US-JKIM', NULL, '1995-01-03', '0794466213', 'ABC DEF', '$2a$10$T0MhjoeuDVi1ZjhC1.OatOGldfr/MkERoDSArpMklRaLxRFyGh8WC', 1, NULL, '2021-07-14 20:07:07', NULL, NULL),
-('20210714002', 2, 'Jennie', 'Kim', 'PHA-US-JKIM1', 'jenniekim@gmail.com', '1996-01-16', '0797788126', 'ABC DEF', '$2a$10$iZblYs0fsFrII/EaFrEaWusSMr4iBNDPhVaTmQ1XX9.eGBwKvisRm', 0, NULL, '2021-07-14 20:13:43', NULL, NULL),
-('20210714003', 1, 'Chae Young', 'Park', 'PHA-US-YPARK', 'chaeyoungpark@gmail.com', '1997-02-11', '0801457895', 'ABC DEF', '$2a$10$YTXfWg0zWbToPp/YOfOQSuXEZ3lVsgOYKHjlN5jSa4aTCcPQMFja2', 1, NULL, '2021-07-14 20:20:28', NULL, NULL),
-('20210714004', 3, 'Lalisa', 'Manoban', 'PHA-US-LMANOBAN', 'lalisamanoban@gmail.com', '1997-03-27', '0804577895', 'ABC DEF', '$2a$10$x4QiZxn4SacQNypusLyNiODlCIDPifLZCMgZUxZtCJDji59EfGbUS', 1, NULL, '2021-07-14 20:32:08', NULL, NULL);
+('20210715001', 2, 'Bom', 'Park', 'ParkBomBom', 'parkbomnom@gmail.com', '1984-03-24', '0794466213', 'ABC DEF', '$2a$10$cWrlrvHSJsL1EGNBDbS/l.9a/OZLoAr3eZ80jhjuAqiupdem00lK2', 1, NULL, '2021-07-15 20:09:52', NULL, '2021-07-15 20:32:58'),
+('20210715002', 1, 'Jennie', 'Kim', 'PHA-US-JKIM1', 'jenniekim@gmail.com', '1996-01-16', '0901671526', 'GHI KLM', '$2a$10$af4KztAZzIabJgZUSctdou.VLFNCf5nllvxkY9U4Sge5ynVnvn6lS', 1, NULL, '2021-07-15 20:10:38', NULL, '2021-07-15 20:40:55'),
+('20210715003', 1, 'Chae Young', 'Park', 'PHA-US-YPARK', 'chaeyoungpark@gmail.com', '1997-02-11', '0801457895', 'ABC DEF', '$2a$10$YQlpkA0UnAT2TFOsRR07Oe1hsOmaPoc2L20fRTdAKbOt8XvqdUfHO', 1, NULL, '2021-07-15 20:10:57', NULL, '2021-07-15 20:53:12'),
+('20210715004', 3, 'Lalisa', 'Manoban', 'PHA-US-LMANOBAN', 'lalisamanoban@gmail.com', '1997-03-27', '0804577895', 'ABC DEF', '$2a$10$f4qvh15L51S8D.ZFE32KPuNbzE1px6pQWYFJuUT2Ks08IpN3.x8UC', 1, NULL, '2021-07-15 20:11:22', NULL, NULL);
 
 --
 -- Cấu trúc bảng cho bảng `category`

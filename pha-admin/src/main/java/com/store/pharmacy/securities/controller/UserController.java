@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,6 +53,15 @@ public class UserController {
 	@GetMapping(value = "/{userId}")
 	public HttpEntity<UserDTO> findUser(@PathVariable("userId") String userId) {
 		UserDTO userDTO = userService.findUser(userId);
+		userDTO.add(linkTo(methodOn(UserController.class).findUser(userId)).withSelfRel().expand());
+		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+	}
+
+	@PatchMapping("/{userId}")
+	public HttpEntity<UserDTO> updateCategory(@PathVariable("userId") String userId,
+			@Valid @RequestBody UserDTO userDTO) {
+		userService.checkIfUserExits(userId);
+		userService.update(userId, userDTO);
 		userDTO.add(linkTo(methodOn(UserController.class).findUser(userId)).withSelfRel().expand());
 		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
