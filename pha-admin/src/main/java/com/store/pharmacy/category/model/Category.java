@@ -1,4 +1,4 @@
-package com.store.pharmacy.Category.model;
+package com.store.pharmacy.category.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

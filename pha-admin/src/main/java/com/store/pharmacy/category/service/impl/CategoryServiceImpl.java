@@ -1,4 +1,4 @@
-package com.store.pharmacy.Category.service.impl;
+package com.store.pharmacy.category.service.impl;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -6,13 +6,13 @@ import java.time.ZoneId;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.store.pharmacy.Category.model.Category;
-import com.store.pharmacy.Category.model.CategoryDTO;
+import com.store.pharmacy.category.model.Category;
+import com.store.pharmacy.category.model.CategoryDTO;
 import com.store.pharmacy.exception.DataNotFoundException;
 import com.store.pharmacy.exception.DuplicateDataException;
 
-import com.store.pharmacy.Category.repository.CategoryRepository;
-import com.store.pharmacy.Category.service.CategoryService;
+import com.store.pharmacy.category.repository.CategoryRepository;
+import com.store.pharmacy.category.service.CategoryService;
 import com.store.pharmacy.utils.ExecContext;
 import com.store.pharmacy.utils.Utils;
 

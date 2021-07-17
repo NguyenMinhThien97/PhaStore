@@ -1,6 +1,6 @@
-package com.store.pharmacy.Client.repository;
+package com.store.pharmacy.client.repository;
 
-import com.store.pharmacy.Client.model.ClientCompany;
+import com.store.pharmacy.client.model.ClientCompany;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
