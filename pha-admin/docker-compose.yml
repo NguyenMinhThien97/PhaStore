@@ -1,0 +1,33 @@
+version: '3'
+services:
+#run cdm: docker-compose up -d
+  db:
+    image: mysql
+    platform: linux/amd64
+    restart: always
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - sql-phastore:/var/lib/mysql
+      - ./src/main/resources/SQL/phastore.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: phastore
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 12345
+
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    ports:
+      - 13306:80
+    environment:
+      PMA_HOST: db
+volumes:
+  sql-phastore:
+
+

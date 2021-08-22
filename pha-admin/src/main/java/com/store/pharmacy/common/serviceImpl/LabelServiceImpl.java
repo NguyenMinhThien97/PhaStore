@@ -4,6 +4,7 @@ import com.store.pharmacy.common.model.Label;
 import com.store.pharmacy.common.model.LabelInput;
 import com.store.pharmacy.common.repository.LabelRepository;
 import com.store.pharmacy.common.service.LabelService;
+import com.store.pharmacy.exception.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,18 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public List<HashMap> findByLabelCodes(List<LabelInput> labelInputs){
         List<HashMap> outputParams = new ArrayList<>();
+        if(labelInputs.isEmpty()){
+            throw new DataNotFoundException();
+        }
         for (LabelInput input: labelInputs) {
+            HashMap labelOutput = new HashMap();
             Label label = labelRepository.findByLabelCodeAndEnabledTrue(input.getCode());
             if(label != null) {
-                HashMap labelOutput = new HashMap();
                 labelOutput.put(label.getLabelCode(), label.getName());
-                outputParams.add(labelOutput);
+            }else {
+                labelOutput.put(input.getCode(), null);
             }
+            outputParams.add(labelOutput);
         }
         return outputParams;
     }
