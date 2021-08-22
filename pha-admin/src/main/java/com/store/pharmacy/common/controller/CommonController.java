@@ -26,7 +26,7 @@ public class CommonController {
     @Autowired
     private MessageService messageService;
 
-    @GetMapping("/commons/{commonCode}")
+    @GetMapping("/{commonCode}")
     public ResponseEntity<List<CommonOutput>> findCommon(@PathVariable("commonCode") String commonCode){
         List<CommonOutput> list = commonService.findByCommonCode(commonCode);
         return new ResponseEntity<>(list, HttpStatus.OK);

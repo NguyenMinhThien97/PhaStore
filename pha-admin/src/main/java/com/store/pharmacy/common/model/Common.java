@@ -22,8 +22,8 @@ public class Common implements Serializable {
     private String commonCode;
 
     @Id
-    @Column(name="SequenceNo")
-    private int sequenceNo;
+    @Column(name="sequenceNo")
+    private int SequenceNo;
 
     @Column(name="name")
     private String name;
