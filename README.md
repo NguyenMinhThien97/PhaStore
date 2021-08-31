@@ -1,5 +1,5 @@
 # Back-end: pha-admin
-Apply technology: Java 8, Spring Boot 2.5.1, Gradle, JPA, MySQL
+Apply technology: Java 8, Spring Boot 2.5.1, Gradle, JPA, MySQL, phpMyAdmin, Docker, Swagger-ui
 
 ## Install apps
 
@@ -23,6 +23,15 @@ Stop a running containers:
 docker container stop [CONTAINER_ID]
 ```
 
+Run phpMyAdmin for localhost:
+```
+http://localhost:13306
+```
+
+Swagger-ui for API: use URL as below to run swagger-ui
+```
+localhost:8080/swagger-ui.html 
+```
 
 
 # Front-end: ui-pha-admin
