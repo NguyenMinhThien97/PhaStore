@@ -1,7 +1,7 @@
 package com.store.pharmacy.exception;
 
+import java.text.MessageFormat;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -14,13 +14,17 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import org.springframework.context.MessageSource;
+
+import com.store.pharmacy.common.model.Message;
+import com.store.pharmacy.common.repository.MessageRepository;
+
+import org.springframework.context.NoSuchMessageException;
 
 @ControllerAdvice
 public class ExceptionHandlingController extends ResponseEntityExceptionHandler {
 
 	@Autowired
-	private MessageSource messageSource;
+	private MessageRepository messageRepository;
 
 	@ExceptionHandler({ DataNotFoundException.class })
 	public ResponseEntity<Object> handleDataNotFoundException(DataNotFoundException ex) {
@@ -50,6 +54,10 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
 	}
 
 	private String resolveLocalizedErrorMessage(String fieldErrorCode, Object[] args) {
-		return messageSource.getMessage(fieldErrorCode, args, new Locale("EN"));
+		Message message = messageRepository.findByMessageCodeAndEnabledTrue(fieldErrorCode);
+		if (message == null) {
+			throw new NoSuchMessageException(fieldErrorCode);
+		}
+		return MessageFormat.format(message.getText().trim(), args);
 	}
 }

@@ -21,4 +21,8 @@ public class Utils {
     }
 
     public static final String URL = "http://localhost:8080/";
+
+	public static String getTimeZone() {
+		return "Asia/Ho_Chi_Minh";
+	}
 }
