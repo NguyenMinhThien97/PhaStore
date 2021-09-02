@@ -17,6 +17,9 @@ services:
       MYSQL_DATABASE: phastore
       MYSQL_USER: admin
       MYSQL_PASSWORD: 12345
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_german2_ci
 
   phpmyadmin:
     depends_on:
