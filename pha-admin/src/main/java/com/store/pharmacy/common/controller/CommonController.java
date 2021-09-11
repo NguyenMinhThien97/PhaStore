@@ -26,21 +26,21 @@ public class CommonController {
     @Autowired
     private MessageService messageService;
 
-    @GetMapping("/{commonCode}")
-    public ResponseEntity<List<CommonOutput>> findCommon(@PathVariable("commonCode") String commonCode){
-        List<CommonOutput> list = commonService.findByCommonCode(commonCode);
+    @GetMapping("/{commonCode}/{Lang}")
+    public ResponseEntity<List<CommonOutput>> findCommon(@PathVariable("commonCode") String commonCode, @PathVariable("lang") String lang){
+        List<CommonOutput> list = commonService.findByCommonCode(commonCode, lang);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @PostMapping(value="/labels")
-    public ResponseEntity<List<HashMap>> findLabel(@RequestBody Map<String, List<LabelInput>> labelInputs){
-        List<HashMap> outParam = labelService.findByLabelCodes(labelInputs.get("labels"));
+    @PostMapping(value="/labels/{lang}")
+    public ResponseEntity<List<HashMap>> findLabel(@PathVariable("lang") String lang, @RequestBody Map<String, List<LabelInput>> labelInputs){
+        List<HashMap> outParam = labelService.findByLabelCodes(labelInputs.get("labels"), lang);
         return new ResponseEntity<>(outParam, HttpStatus.OK);
     }
 
-    @GetMapping("/messages/{messageCode}")
-    public ResponseEntity<MessageOutput> findMessage(@PathVariable("messageCode") String messageCode){
-        MessageOutput outParam = messageService.getByMessageCode(messageCode);
+    @GetMapping("/messages/{messageCode}/{lang}")
+    public ResponseEntity<MessageOutput> findMessage(@PathVariable("messageCode") String messageCode, @PathVariable("lang") String lang){
+        MessageOutput outParam = messageService.getByMessageCode(messageCode, lang);
         return new ResponseEntity<>(outParam, HttpStatus.OK);
     }
 }

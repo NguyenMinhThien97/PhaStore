@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LabelRepository extends JpaRepository<Label, String> {
 
-    Label findByLabelCodeAndEnabledTrue(String labelCode);
+    Label findByLabelCodeAndLangAndEnabledTrue(String labelCode, String lang);
 }

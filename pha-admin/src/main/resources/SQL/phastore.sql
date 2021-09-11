@@ -11,52 +11,6 @@ CREATE DATABASE IF NOT EXISTS `phastore` DEFAULT CHARACTER SET utf8mb4 COLLATE u
 USE `phastore`;
 -- --------------------------------------------------------
 
-DELIMITER $$
---
--- Functions
---
-CREATE DEFINER=`root`@`localhost` FUNCTION `generateUserId` () RETURNS VARCHAR(11) CHARSET utf8mb4 BEGIN
-SET @today = (SELECT CURRENT_DATE());
-SET @day = (SELECT LPAD(DAYOFMONTH(@today), 2, 0));
-SET @month = (SELECT LPAD(MONTH(@today), 2, 0));
-SET @year = (SELECT YEAR(@today));
-SET @userId = (SELECT CONCAT(@year, @month, @day, LPAD(1, 3, 0)));
-SET @maxUserId = (SELECT MAX(UserId) FROM USER);
-SET @flag = (SELECT ISNULL(NULLIF(@maxUserId,'')));
-IF @flag = 1 THEN
-  RETURN @userId;
-ELSE
-  SET @flag = (SELECT @userId > @maxUserId);
-  IF @flag = 1 THEN
-    RETURN @userId;
-  ELSE
-    SET @seq = (SELECT CAST(RIGHT(@maxUserId,3) AS int)) + 1;
-    SET @seq = (SELECT LPAD(@seq, 3, 0));
-    SET @dayMonthYear = (SELECT SUBSTRING(@maxUserId, 1, 8));
-    RETURN (SELECT CONCAT(@dayMonthYear, @seq));
-  END IF;
-END IF;
-END$$
-
-CREATE DEFINER=`root`@`localhost` FUNCTION `generateUserName` (`firstName` CHAR(1), `lastName` VARCHAR(255)) RETURNS VARCHAR(255) CHARSET utf8mb4 BEGIN
-SET @count = 0;
-SET @userName = (SELECT CONCAT('PHA-US-', firstName, lastName));
-label1: LOOP
-SET @isExitedUserName = (SELECT UserName FROM User WHERE UserName = @userName);
-     IF ISNULL(NULLIF(@isExitedUserName,'')) = 0 THEN
-     SET @count = @count + 1;
-     SET @userName = (SELECT CONCAT('PHA-US-', firstName, lastName, @count));
-     SET @isExitedUserName = @userName;
-       ITERATE label1;
-     END IF;
-     LEAVE label1;
-   END LOOP label1;
-RETURN (SELECT UPPER(@userName));
-END$$
-
-DELIMITER ;
-
--- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `Common`
@@ -238,11 +192,20 @@ ALTER TABLE `User`
 ALTER TABLE `Category`
   ADD PRIMARY KEY (`CategoryId`);
 
---
--- AUTO_INCREMENT cho các bảng đã đổ
---
 
 -- --------------------------------------------------------
+
+CREATE TABLE `Company` (
+  `ID_COMPANY` bigint NOT NULL,
+  `NAME` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
+  `TAX_CODE` varchar(50) COLLATE utf8mb4_german2_ci NOT NULL,
+  `DESCRIPTION` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `CREATED_BY` varchar(50) COLLATE utf8mb4_german2_ci NOT NULL,
+  `CREATED_AT` datetime NOT NULL,
+  `UPDATED_BY` varchar(50) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `UPDATED_AT` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID_COMPANY`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci
 
 --
 COMMIT;

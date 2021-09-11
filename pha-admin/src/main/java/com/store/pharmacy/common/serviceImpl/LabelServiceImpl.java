@@ -21,14 +21,14 @@ public class LabelServiceImpl implements LabelService {
     LabelRepository labelRepository;
 
     @Override
-    public List<HashMap> findByLabelCodes(List<LabelInput> labelInputs){
+    public List<HashMap> findByLabelCodes(List<LabelInput> labelInputs, String lang){
         List<HashMap> outputParams = new ArrayList<>();
         if(labelInputs.isEmpty()){
             throw new DataNotFoundException();
         }
         for (LabelInput input: labelInputs) {
             HashMap labelOutput = new HashMap();
-            Label label = labelRepository.findByLabelCodeAndEnabledTrue(input.getCode());
+            Label label = labelRepository.findByLabelCodeAndLangAndEnabledTrue(input.getCode(), lang);
             if(label != null) {
                 labelOutput.put(label.getLabelCode(), label.getName());
             }else {

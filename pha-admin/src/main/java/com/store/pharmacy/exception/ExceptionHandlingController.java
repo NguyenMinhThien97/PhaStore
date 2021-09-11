@@ -2,8 +2,11 @@ package com.store.pharmacy.exception;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,8 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
 	@Autowired
 	private MessageRepository messageRepository;
 
+	private static final String DEFAULT_LOCALE_CODE = "en";
+
 	@ExceptionHandler({ DataNotFoundException.class })
 	public ResponseEntity<Object> handleDataNotFoundException(DataNotFoundException ex) {
 		String localizedErrorMessage = resolveLocalizedErrorMessage(ex.getMessage(), ex.getArgs());
@@ -46,18 +51,60 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
 		List<FieldError> fieldErrors = result.getFieldErrors();
 		ValidationErrorDTO dto = new ValidationErrorDTO();
 		for (FieldError fieldError : fieldErrors) {
-			String localizedErrorMessage = resolveLocalizedErrorMessage(fieldError.getCode(),
-					fieldError.getArguments());
+			String localizedErrorMessage;
+			if(fieldError.getDefaultMessage() == null) {
+				localizedErrorMessage = resolveLocalizedErrorMessage(fieldError.getCode(),
+						fieldError.getArguments());
+			}else {
+				localizedErrorMessage = resolveLocalizedErrorMessage(fieldError.getField(), fieldError.getDefaultMessage());
+			}
 			dto.addFieldError(fieldError.getField(), localizedErrorMessage);
 		}
 		return new ResponseEntity<Object>(dto, headers, status);
 	}
 
 	private String resolveLocalizedErrorMessage(String fieldErrorCode, Object[] args) {
-		Message message = messageRepository.findByMessageCodeAndEnabledTrue(fieldErrorCode);
+		Locale currentLocale = LocaleContextHolder.getLocale();
+		Message message = messageRepository.findByMessageCodeAndLangAndEnabledTrue(fieldErrorCode, DEFAULT_LOCALE_CODE);
 		if (message == null) {
-			throw new NoSuchMessageException(fieldErrorCode);
+			message = messageRepository.findByMessageCodeAndLangAndEnabledTrue(fieldErrorCode, DEFAULT_LOCALE_CODE);
+			if (message == null) {
+				throw new NoSuchMessageException(fieldErrorCode);
+			}
 		}
 		return MessageFormat.format(message.getText().trim(), args);
+	}
+
+	private String resolveLocalizedErrorMessage(String fieldErrorCode, String messageCodes ) {
+		String messageCode;
+		int stringNumber = StringUtils.countMatches(messageCodes, ".");
+		String[] filedNames = new String[stringNumber+ 1];
+		filedNames[0]= fieldErrorCode;
+		if(stringNumber > 0) {
+			messageCode = messageCodes.substring(0, messageCodes.indexOf("."));
+			messageCodes = messageCodes.replaceAll(messageCode + ".", "");
+			stringNumber--;
+			int i = 0;
+			int j = 0;
+			while ( i <= stringNumber) {
+				String filedName = null;
+				if(stringNumber == 0) {
+					filedName = messageCodes.substring( 0, messageCodes.length());
+				}else {
+					filedName = messageCodes.substring( 0, messageCodes.indexOf("."));
+				}
+				filedNames[++j]= filedName;
+				messageCodes = messageCodes.replaceAll(filedName + ".", "");
+				stringNumber--;
+			}
+		}else {
+			messageCode = messageCodes;
+		}
+
+		Message message = messageRepository.findByMessageCodeAndLangAndEnabledTrue(messageCode, DEFAULT_LOCALE_CODE);
+		if (message == null) {
+			message = messageRepository.findByMessageCodeAndLangAndEnabledTrue(messageCode, DEFAULT_LOCALE_CODE);
+		}
+		return MessageFormat.format(message.getText().trim(), filedNames);
 	}
 }
