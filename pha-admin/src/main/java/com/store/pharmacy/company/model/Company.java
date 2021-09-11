@@ -1,4 +1,4 @@
-package com.store.pharmacy.Company.model;
+package com.store.pharmacy.company.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ public class Company  implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ID_COMPANY")
     private long idCompany;
 

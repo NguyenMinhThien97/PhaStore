@@ -1,4 +1,4 @@
-package com.store.pharmacy.Company.model;
+package com.store.pharmacy.company.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
