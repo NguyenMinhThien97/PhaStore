@@ -19,10 +19,10 @@ public class CommonServiceImpl implements CommonService {
     private CommonRepository commonRepository;
 
     @Override
-    public List<CommonOutput> findByCommonCode(String commonCode) {
+    public List<CommonOutput> findByCommonCode(String commonCode, String lang) {
         List<CommonOutput> outputParams = new ArrayList<>();
 
-        List<Common> commons = commonRepository.findByCommonCodeAndEnabledTrue(commonCode);
+        List<Common> commons = commonRepository.findByCommonCodeAndLangAndEnabledTrue(commonCode, lang);
         for (Common c: commons) {
             CommonOutput commonOutput = new CommonOutput(c.getCommonCode(), c.getName());
             outputParams.add(commonOutput);

@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface CommonRepository extends JpaRepository<Common, CommonId> {
 
-	List<Common> findByCommonCodeAndEnabledTrue(String commonCode);
+	List<Common> findByCommonCodeAndLangAndEnabledTrue(String commonCode, String lang);
 
 	@Query("SELECT c FROM Common c WHERE c.commonCode = :commonCode AND name = :name")
 	Common findByCommonCodeAndName(@Param("commonCode") String commonCode, @Param("name") String name);

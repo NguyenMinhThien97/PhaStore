@@ -20,19 +20,22 @@ public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name="messageCode")
+    @Column(name="MESSAGE_CODE")
     private String messageCode;
 
-    @Column(name="text")
+    @Column(name="TEXT")
     private String text;
 
-    @Column(name="enabled")
+    @Column(name="LANG")
+    private String lang;
+
+    @Column(name="ENABLED")
     private boolean enabled;
 
-    @Column(name="createdBy")
+    @Column(name="CREATED_BY")
     private String createdBy;
 
-    @Column(name="createdAt")
+    @Column(name="CREATED_AT")
     private LocalDate createdAt;
 
 }

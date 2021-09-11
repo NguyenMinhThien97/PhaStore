@@ -17,18 +17,21 @@ public class Label implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name="labelCode")
+    @Column(name="LABEL_CODE")
     private String labelCode;
 
-    @Column(name="name")
+    @Column(name="NAME")
     private String name;
 
-    @Column(name="enabled")
+    @Column(name="LANG")
+    private String lang;
+
+    @Column(name="ENABLED")
     private boolean enabled;
 
-    @Column(name="createdBy")
+    @Column(name="CREATED_BY")
     private String createdBy;
 
-    @Column(name="createdAt")
+    @Column(name="CREATED_AT")
     private LocalDate createdAt;
 }
