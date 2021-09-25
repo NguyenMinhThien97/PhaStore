@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class CompanyInput {
     private String name;
 
     @NotBlank(message = "MSG0020")
-    @Min(value = 3, message = "MSG0021.3")
+    @Size(min = 3, message = "MSG0021.3")
     private String taxCode;
 
     private String description;

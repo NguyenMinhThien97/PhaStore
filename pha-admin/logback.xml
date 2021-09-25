@@ -1,0 +1,30 @@
+<configuration
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://ch.qos.logback/xml/ns/logback"
+	xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd">
+
+	<include
+		resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<include
+		resource="org/springframework/boot/logging/logback/console-appender.xml" />
+	<include
+		resource="org/springframework/boot/logging/logback/base.xml" />
+	<appender
+		class="ch.qos.logback.core.rolling.RollingFileAppender" name="FILE">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- hourly rollover -->
+			<fileNamePattern>log/%d{yyyyMMddHH,GMT}_${LOG_FILE}</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>

@@ -51,7 +51,8 @@ public class CategoryServiceImpl implements CategoryService {
 	public CategoryDTO findCategory(String categoryId) {
 		Category category = categoryRepository.findById(categoryId).orElse(null);
 		if (category == null) {
-			throw new DataNotFoundException("MSG0015", new Object[] { categoryId });
+//			throw new DataNotFoundException("MSG0015", new Object[] { categoryId });
+			throw new DataNotFoundException();
 		}
 		CategoryDTO categoryDTO = new CategoryDTO();
 		categoryDTO.setCategoryId(categoryId);
