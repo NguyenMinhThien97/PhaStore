@@ -1,4 +1,5 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -12,8 +13,11 @@ SET time_zone = "+00:00";
 -- Database: `phastore`
 --
 
+CREATE DATABASE IF NOT EXISTS `phastore` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci;
+USE `phastore`;
 -- --------------------------------------------------------
 
+DELIMITER $$
 --
 -- Table structure for table `Category`
 --
