@@ -1,69 +1,61 @@
 package com.store.pharmacy.Client.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@Table(name = "Client")
 public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
-    @Column(name="idClient")
-    private long idClient;
+    @Column(name="ID_CLIENT", length = 11, nullable = false)
+    private String idClient;
 
-    @Column(name="idCompany")
+    @Column(name="ID_COMPANY")
     private long idCompany;
 
-    @Column(name="userName")
+    @Column(name="USER_NAME", length = 100, nullable = false)
     private String userName;
 
-    @Column(name="firstName")
+    @Column(name="FIRST_NAME", length = 80, nullable = false)
     private String firstName;
 
-    @Column(name="lastName")
+    @Column(name="LAST_NAME", length = 80)
     private String lastName;
 
-    @Column(name="email")
+    @Column(name="EMAIL", length = 120)
     private String email;
 
-    @Column(name="birthday")
-    private String birthday;
+    @Column(name="BIRTHDAY")
+    private LocalDate birthday;
 
-    @Column(name="phoneNumber")
+    @Column(name="PHONE_NUMBER", length = 12, nullable = false)
     private String phoneNumber;
 
-    @Column(name="address")
+    @Column(name="ADDRESS", nullable = false)
     private String address;
 
-    @Column(name="password")
+    @Column(name="PASSWORD", nullable = false)
     private String password;
 
-    @Column(name="enabled")
+    @Column(name="ENABLED")
     private boolean enabled;
 
-    @Column(name="createdBy")
+    @Column(name="CREATED_BY")
     private String createdBy;
 
-    @Column(name="createdAt")
+    @Column(name="CREATED_AT", nullable = false)
     private LocalDate createdAt;
 
-    @Column(name="updatedBy")
+    @Column(name="UPDATED_BY")
     private String updatedBy;
 
-    @Column(name="updatedAt")
+    @Column(name="UPDATED_AT")
     private LocalDate updatedAt;
-
-    @ManyToOne
-    private ClientCompany clientCompany;
 }

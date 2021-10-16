@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -33,11 +34,11 @@ public class Company  implements Serializable {
     private String createdBy;
 
     @Column(name="CREATED_AT")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name="UPDATED_BY")
     private String updatedBy;
 
     @Column(name="UPDATED_AT")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 }

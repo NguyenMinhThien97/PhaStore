@@ -19,15 +19,14 @@ public class CompanyController {
     CompanyService companyService;
 
     @PostMapping
-    public HttpEntity<CompanyOutput> createCompany(@Valid @RequestBody CompanyInput companyForm) {
-        CompanyOutput outParam = companyService.save(companyForm);
-
+    public HttpEntity<CompanyOutput> createCompany(@Valid @RequestBody CompanyInput companyInput) {
+        CompanyOutput outParam = companyService.save(companyInput);
         return new ResponseEntity<>(outParam, HttpStatus.CREATED);
     }
 
     @PutMapping("/{idCompany}")
-    public HttpEntity<CompanyOutput> updateCompany(@PathVariable("idCompany") String idCompany, @Valid @RequestBody CompanyInput companyForm) {
-        CompanyOutput outParam = companyService.update(idCompany, companyForm);
+    public HttpEntity<CompanyOutput> updateCompany(@PathVariable("idCompany") String idCompany, @Valid @RequestBody CompanyInput companyInput) {
+        CompanyOutput outParam = companyService.update(idCompany, companyInput);
         return new ResponseEntity<>(outParam, HttpStatus.OK);
     }
 }
