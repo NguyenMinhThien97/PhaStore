@@ -1,37 +1,35 @@
 package com.store.pharmacy.common.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@Table(name = "Label")
+@Table(name = "label")
 public class Label implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name="LABEL_CODE")
+    @Column(name="LABEL_CODE" , length = 16, nullable = false)
     private String labelCode;
 
-    @Column(name="NAME")
+    @Column(name="NAME", nullable = false)
     private String name;
 
-    @Column(name="LANG")
+    @Column(name="LANG", length = 4, nullable = false)
     private String lang;
 
     @Column(name="ENABLED")
     private boolean enabled;
 
-    @Column(name="CREATED_BY")
+    @Column(name="CREATED_BY", nullable = false)
     private String createdBy;
 
-    @Column(name="CREATED_AT")
-    private LocalDate createdAt;
+    @Column(name="CREATED_AT", nullable = false)
+    private LocalDateTime createdAt;
 }

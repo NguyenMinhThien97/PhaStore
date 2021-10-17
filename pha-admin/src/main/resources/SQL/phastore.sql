@@ -73,17 +73,17 @@ INSERT INTO `Common` (`COMMON_CODE`, `SEQUENCE_NO`, `NAME`, `LANG`, `ENABLED`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Company`
+-- Table structure for table `COMPANY`
 --
 
-CREATE TABLE `Company` (
+CREATE TABLE `COMPANY` (
   `ID_COMPANY` bigint NOT NULL,
   `NAME` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
   `TAX_CODE` varchar(50) COLLATE utf8mb4_german2_ci NOT NULL,
   `DESCRIPTION` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  `CREATED_BY` varchar(50) COLLATE utf8mb4_german2_ci NOT NULL,
+  `CREATED_BY` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
   `CREATED_AT` datetime NOT NULL,
-  `UPDATED_BY` varchar(50) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `UPDATED_BY` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `UPDATED_AT` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
 
@@ -206,9 +206,9 @@ ALTER TABLE `Common`
   ADD KEY `CommonCode` (`COMMON_CODE`);
 
 --
--- Indexes for table `Company`
+-- Indexes for table `COMPANY`
 --
-ALTER TABLE `Company`
+ALTER TABLE `COMPANY`
   ADD PRIMARY KEY (`ID_COMPANY`);
 
 --
@@ -230,6 +230,26 @@ ALTER TABLE `Message`
 --
 ALTER TABLE `User`
   ADD PRIMARY KEY (`UserId`);
+
+CREATE TABLE `client` (
+  `ID_CLIENT` varchar(11) NOT NULL,
+  `ADDRESS` varchar(255) NOT NULL,
+  `BIRTHDAY` date DEFAULT NULL,
+  `CREATED_AT` date NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `EMAIL` varchar(120) DEFAULT NULL,
+  `ENABLED` bit(1) DEFAULT NULL,
+  `FIRST_NAME` varchar(80) NOT NULL,
+  `ID_COMPANY` bigint(20) DEFAULT NULL,
+  `LAST_NAME` varchar(80) DEFAULT NULL,
+  `PASSWORD` varchar(255) NOT NULL,
+  `PHONE_NUMBER` varchar(12) NOT NULL,
+  `UPDATED_AT` date DEFAULT NULL,
+  `UPDATED_BY` varchar(255) DEFAULT NULL,
+  `USER_NAME` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID_CLIENT`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,11 +1,9 @@
 package com.store.pharmacy.exception;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class BadRequestException extends RuntimeException {
 

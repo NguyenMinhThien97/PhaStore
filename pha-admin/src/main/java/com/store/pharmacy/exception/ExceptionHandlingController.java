@@ -33,23 +33,24 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
 	public ResponseEntity<Object> handleDataNotFoundException(DataNotFoundException ex) {
 		String localizedErrorMessage = resolveLocalizedErrorMessage(ex.getMessage(), ex.getArgs());
 		FieldErrorDTO fieldErrorDTO = new FieldErrorDTO(null, localizedErrorMessage);
-		return new ResponseEntity<Object>(fieldErrorDTO, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(fieldErrorDTO, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler({ DuplicateDataException.class })
 	public ResponseEntity<Object> handleDuplicateDataException(DuplicateDataException ex) {
 		String localizedErrorMessage = resolveLocalizedErrorMessage(ex.getMessage(), ex.getArgs());
 		FieldErrorDTO fieldErrorDTO = new FieldErrorDTO(null, localizedErrorMessage);
-		return new ResponseEntity<Object>(fieldErrorDTO, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(fieldErrorDTO, HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler({ BadRequestException.class })
 	public ResponseEntity<Object> handleDataNotFoundException(BadRequestException ex) {
 		String localizedErrorMessage = resolveLocalizedErrorMessage(ex.getMessage(), ex.getArgs());
 		FieldErrorDTO fieldErrorDTO = new FieldErrorDTO(null, localizedErrorMessage);
-		return new ResponseEntity<Object>(fieldErrorDTO, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(fieldErrorDTO, HttpStatus.BAD_REQUEST);
 	}
 
+	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 																  HttpHeaders headers, HttpStatus status, WebRequest request) {
 		BindingResult result = ex.getBindingResult();
@@ -65,7 +66,7 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
 			}
 			dto.addFieldError(fieldError.getField(), localizedErrorMessage);
 		}
-		return new ResponseEntity<Object>(dto, headers, status);
+		return new ResponseEntity<>(dto, headers, status);
 	}
 
 	private String resolveLocalizedErrorMessage(String fieldErrorCode, Object[] args) {

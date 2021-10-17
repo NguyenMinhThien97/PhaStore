@@ -1,41 +1,39 @@
 package com.store.pharmacy.common.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@Table(name = "Message")
+@Table(name = "message")
 public class Message implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name="MESSAGE_CODE")
+    @Column(name="MESSAGE_CODE", length = 16, nullable = false)
     private String messageCode;
 
-    @Column(name="TEXT")
+    @Column(name="TEXT", nullable = false)
     private String text;
 
-    @Column(name="LANG")
+    @Column(name="LANG", length = 4, nullable = false)
     private String lang;
 
     @Column(name="ENABLED")
     private boolean enabled;
 
-    @Column(name="CREATED_BY")
+    @Column(name="CREATED_BY", nullable = false)
     private String createdBy;
 
-    @Column(name="CREATED_AT")
-    private LocalDate createdAt;
+    @Column(name="CREATED_AT", nullable = false)
+    private LocalDateTime createdAt;
 
 }
