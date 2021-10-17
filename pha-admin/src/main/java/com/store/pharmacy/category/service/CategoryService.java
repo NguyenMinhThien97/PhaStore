@@ -1,6 +1,6 @@
-package com.store.pharmacy.Category.service;
+package com.store.pharmacy.category.service;
 
-import com.store.pharmacy.Category.model.CategoryDTO;
+import com.store.pharmacy.category.model.CategoryDTO;
 
 public interface CategoryService {
 

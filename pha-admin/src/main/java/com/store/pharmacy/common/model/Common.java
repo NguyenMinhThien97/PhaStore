@@ -1,18 +1,15 @@
 package com.store.pharmacy.common.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@Table(name = "Common")
 @IdClass(CommonId.class)
 public class Common implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -22,21 +19,21 @@ public class Common implements Serializable {
     private String commonCode;
 
     @Id
-    @Column(name="SEQUENCE_NO")
+    @Column(name="SEQUENCE_NO", length = 9, nullable = false)
     private int sequenceNo;
 
-    @Column(name="NAME")
+    @Column(name="NAME", nullable = false)
     private String name;
 
-    @Column(name="LANG")
+    @Column(name="LANG", length = 4, nullable = false)
     private String lang;
 
     @Column(name="ENABLED")
     private boolean enabled;
 
-    @Column(name="CREATED_BY")
+    @Column(name="CREATED_BY", nullable = false)
     private String createdBy;
 
-    @Column(name="CREATED_AT")
-    private LocalDate createdAt;
+    @Column(name="CREATED_AT", nullable = false)
+    private LocalDateTime createdAt;
 }

@@ -1,4 +1,5 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -12,7 +13,35 @@ SET time_zone = "+00:00";
 -- Database: `phastore`
 --
 
+CREATE DATABASE IF NOT EXISTS `phastore` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci;
+USE `phastore`;
 -- --------------------------------------------------------
+
+DELIMITER $$
+--
+-- Table structure for table `Category`
+--
+
+CREATE TABLE `Category` (
+  `CategoryId` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
+  `CategoryName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
+  `Enabled` tinyint(1) NOT NULL,
+  `Description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `CreatedBy` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `CreatedAt` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `UpdatedBy` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `UpdatedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
+
+--
+-- Dumping data for table `Category`
+--
+
+INSERT INTO `Category` (`CategoryId`, `CategoryName`, `Enabled`, `Description`, `CreatedBy`, `CreatedAt`, `UpdatedBy`, `UpdatedAt`) VALUES
+('CAT-01', 'Tri gut, xuong khop', 1, 'Tri gut, xuong khop', NULL, '2021-07-06 17:03:50', NULL, NULL),
+('CAT-02', 'Tri benh phu khoa', 1, 'Tri benh phu khoa', NULL, '2021-07-06 17:05:11', NULL, '2021-07-06 17:32:33'),
+('CAT-03', 'Tri benh da lieu', 1, '', NULL, '2021-07-06 17:11:02', NULL, '2021-07-06 17:30:20'),
+('string', 'string', 1, 'string', NULL, '2021-09-07 23:25:47', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -52,9 +81,9 @@ CREATE TABLE `Company` (
   `NAME` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
   `TAX_CODE` varchar(50) COLLATE utf8mb4_german2_ci NOT NULL,
   `DESCRIPTION` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  `CREATED_BY` varchar(50) COLLATE utf8mb4_german2_ci NOT NULL,
+  `CREATED_BY` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
   `CREATED_AT` datetime NOT NULL,
-  `UPDATED_BY` varchar(50) COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `UPDATED_BY` varchar(255) COLLATE utf8mb4_german2_ci DEFAULT NULL,
   `UPDATED_AT` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
 
@@ -201,10 +230,28 @@ ALTER TABLE `Message`
 --
 ALTER TABLE `User`
   ADD PRIMARY KEY (`UserId`);
+
+CREATE TABLE `client` (
+  `ID_CLIENT` varchar(11) NOT NULL,
+  `ADDRESS` varchar(255) NOT NULL,
+  `BIRTHDAY` date DEFAULT NULL,
+  `CREATED_AT` date NOT NULL,
+  `CREATED_BY` varchar(255) DEFAULT NULL,
+  `EMAIL` varchar(120) DEFAULT NULL,
+  `ENABLED` bit(1) DEFAULT NULL,
+  `FIRST_NAME` varchar(80) NOT NULL,
+  `ID_COMPANY` bigint(20) DEFAULT NULL,
+  `LAST_NAME` varchar(80) DEFAULT NULL,
+  `PASSWORD` varchar(255) NOT NULL,
+  `PHONE_NUMBER` varchar(12) NOT NULL,
+  `UPDATED_AT` date DEFAULT NULL,
+  `UPDATED_BY` varchar(255) DEFAULT NULL,
+  `USER_NAME` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID_CLIENT`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-=======
--- --------------------------------------------------------

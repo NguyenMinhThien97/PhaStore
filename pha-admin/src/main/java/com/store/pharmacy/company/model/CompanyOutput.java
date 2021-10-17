@@ -1,13 +1,12 @@
 package com.store.pharmacy.company.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import java.time.LocalDate;
 
-@Getter
-@Setter
+import java.time.LocalDateTime;
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompanyOutput {
@@ -22,5 +21,5 @@ public class CompanyOutput {
 
     private String userId;
 
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 }

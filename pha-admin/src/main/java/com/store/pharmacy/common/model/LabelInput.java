@@ -1,10 +1,8 @@
 package com.store.pharmacy.common.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class LabelInput {
     private String code;
 }

@@ -1,15 +1,13 @@
 package com.store.pharmacy.company.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 public class Company  implements Serializable {
@@ -20,24 +18,24 @@ public class Company  implements Serializable {
     @Column(name="ID_COMPANY")
     private long idCompany;
 
-    @Column(name="NAME")
+    @Column(name="NAME", nullable = false)
     private String name;
 
-    @Column(name="TAX_CODE")
+    @Column(name="TAX_CODE", length = 50, nullable = false)
     private String taxCode;
 
     @Column(name="DESCRIPTION")
     private String description;
 
-    @Column(name="CREATED_BY")
+    @Column(name="CREATED_BY", nullable = false)
     private String createdBy;
 
-    @Column(name="CREATED_AT")
-    private LocalDate createdAt;
+    @Column(name="CREATED_AT", nullable = false)
+    private LocalDateTime createdAt;
 
     @Column(name="UPDATED_BY")
     private String updatedBy;
 
     @Column(name="UPDATED_AT")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 }

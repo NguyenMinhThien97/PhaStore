@@ -1,4 +1,4 @@
-package com.store.pharmacy.Category.model;
+package com.store.pharmacy.category.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -7,12 +7,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 public class Category implements Serializable{
