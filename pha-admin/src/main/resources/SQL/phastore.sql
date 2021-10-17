@@ -73,10 +73,10 @@ INSERT INTO `Common` (`COMMON_CODE`, `SEQUENCE_NO`, `NAME`, `LANG`, `ENABLED`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `COMPANY`
+-- Table structure for table `Company`
 --
 
-CREATE TABLE `COMPANY` (
+CREATE TABLE `Company` (
   `ID_COMPANY` bigint NOT NULL,
   `NAME` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
   `TAX_CODE` varchar(50) COLLATE utf8mb4_german2_ci NOT NULL,
@@ -206,9 +206,9 @@ ALTER TABLE `Common`
   ADD KEY `CommonCode` (`COMMON_CODE`);
 
 --
--- Indexes for table `COMPANY`
+-- Indexes for table `Company`
 --
-ALTER TABLE `COMPANY`
+ALTER TABLE `Company`
   ADD PRIMARY KEY (`ID_COMPANY`);
 
 --

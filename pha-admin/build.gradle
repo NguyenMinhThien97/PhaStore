@@ -32,6 +32,7 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-ui:1.5.2'
 	implementation "org.apache.commons:commons-lang3:3.9"
 	implementation 'org.modelmapper:modelmapper:2.1.1'
+	implementation 'net.kaczmarzyk:specification-arg-resolver:2.6.2'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
