@@ -1,5 +1,5 @@
 # Back-end: pha-admin
-Apply technology: Java 8, Spring Boot 2.5.1, Gradle, JPA, MySQL, phpMyAdmin, Docker, Swagger-ui
+Apply technology: Java 11, Spring Boot 2.5.1, Gradle, JPA, MySQL, phpMyAdmin, Docker, Swagger-ui
 
 ## Install apps
 
