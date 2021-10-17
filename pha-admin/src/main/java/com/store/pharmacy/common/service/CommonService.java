@@ -6,5 +6,5 @@ import com.store.pharmacy.common.model.CommonOutput;
 import java.util.List;
 
 public interface CommonService {
-    List<CommonOutput> findByCommonCode(String commonCode);
+    List<CommonOutput> findByCommonCode(String commonCode, String lang);
 }

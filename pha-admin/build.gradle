@@ -7,7 +7,7 @@ plugins {
 
 group = 'com.store'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = "11"
 
 configurations {
 	compileOnly {
@@ -31,6 +31,7 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.5.2'
 	implementation "org.apache.commons:commons-lang3:3.9"
+	implementation 'net.kaczmarzyk:specification-arg-resolver:2.6.2'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -43,3 +44,4 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_11

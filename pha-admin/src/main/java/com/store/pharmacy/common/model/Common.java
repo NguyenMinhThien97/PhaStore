@@ -18,22 +18,25 @@ public class Common implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name="commonCode")
+    @Column(name="COMMON_CODE")
     private String commonCode;
 
     @Id
-    @Column(name="sequenceNo")
-    private int SequenceNo;
+    @Column(name="SEQUENCE_NO")
+    private int sequenceNo;
 
-    @Column(name="name")
+    @Column(name="NAME")
     private String name;
 
-    @Column(name="enabled")
+    @Column(name="LANG")
+    private String lang;
+
+    @Column(name="ENABLED")
     private boolean enabled;
 
-    @Column(name="createdBy")
+    @Column(name="CREATED_BY")
     private String createdBy;
 
-    @Column(name="createdAt")
+    @Column(name="CREATED_AT")
     private LocalDate createdAt;
 }
