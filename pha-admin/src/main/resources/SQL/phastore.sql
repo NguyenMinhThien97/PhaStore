@@ -46,10 +46,10 @@ INSERT INTO `Category` (`CategoryId`, `CategoryName`, `Enabled`, `Description`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Common`
+-- Table structure for table `COMMON`
 --
 
-CREATE TABLE `Common` (
+CREATE TABLE `COMMON` (
   `COMMON_CODE` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
   `SEQUENCE_NO` int NOT NULL,
   `NAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
@@ -60,10 +60,10 @@ CREATE TABLE `Common` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
 
 --
--- Dumping data for table `Common`
+-- Dumping data for table `COMMON`
 --
 
-INSERT INTO `Common` (`COMMON_CODE`, `SEQUENCE_NO`, `NAME`, `LANG`, `ENABLED`, `CREATED_BY`, `CREATED_AT`) VALUES
+INSERT INTO `COMMON` (`COMMON_CODE`, `SEQUENCE_NO`, `NAME`, `LANG`, `ENABLED`, `CREATED_BY`, `CREATED_AT`) VALUES
 ('1334', 1, 'Pass', 'en', 0, 'MThien', '2021-06-24 10:41:27'),
 ('1334', 2, 'Fail', 'en', 1, 'MThien', '2021-06-24 10:41:27'),
 ('ROLE_USER', 1, 'Seasonal Worker', 'en', 1, 'xphung', '2021-07-14 12:36:15'),
@@ -73,10 +73,10 @@ INSERT INTO `Common` (`COMMON_CODE`, `SEQUENCE_NO`, `NAME`, `LANG`, `ENABLED`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Company`
+-- Table structure for table `COMPANY`
 --
 
-CREATE TABLE `Company` (
+CREATE TABLE `COMPANY` (
   `ID_COMPANY` bigint NOT NULL,
   `NAME` varchar(255) COLLATE utf8mb4_german2_ci NOT NULL,
   `TAX_CODE` varchar(50) COLLATE utf8mb4_german2_ci NOT NULL,
@@ -87,13 +87,21 @@ CREATE TABLE `Company` (
   `UPDATED_AT` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
 
+--
+-- Dumping data for table `COMPANY`
+--
+
+INSERT INTO `COMPANY` (`ID_COMPANY`, `CREATED_AT`, `CREATED_BY`, `DESCRIPTION`, `NAME`, `TAX_CODE`, `UPDATED_AT`, `UPDATED_BY`) VALUES
+(14, '2021-10-20 21:13:46', '20210715001', 'COMPANY_1', 'COMPANY_1', 'COMPANY_1_TAX', NULL, NULL),
+(15, '2021-10-20 21:20:32', '20210715001', NULL, 'COMPANY_2', 'COMPANY_2_TAX', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Label`
+-- Table structure for table `LABEL`
 --
 
-CREATE TABLE `Label` (
+CREATE TABLE `LABEL` (
   `LABEL_CODE` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
   `NAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
   `LANG` varchar(4) COLLATE utf8mb4_german2_ci NOT NULL,
@@ -103,10 +111,10 @@ CREATE TABLE `Label` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
 
 --
--- Dumping data for table `Label`
+-- Dumping data for table `LABEL`
 --
 
-INSERT INTO `Label` (`LABEL_CODE`, `NAME`, `LANG`, `ENABLED`, `CREATED_BY`, `CREATED_AT`) VALUES
+INSERT INTO `LABEL` (`LABEL_CODE`, `NAME`, `LANG`, `ENABLED`, `CREATED_BY`, `CREATED_AT`) VALUES
 ('C001', 'Name', 'en', 1, 'MThien', '2021-06-28 01:30:23'),
 ('C002', 'Description', 'en', 1, 'MThien', '2021-06-28 01:30:23'),
 ('C003', 'Email', 'en', 1, 'MThien', '2021-06-28 01:31:15'),
@@ -115,10 +123,10 @@ INSERT INTO `Label` (`LABEL_CODE`, `NAME`, `LANG`, `ENABLED`, `CREATED_BY`, `CRE
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Message`
+-- Table structure for table `MESSAGE`
 --
 
-CREATE TABLE `Message` (
+CREATE TABLE `MESSAGE` (
   `MESSAGE_CODE` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
   `TEXT` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
   `LANG` varchar(4) COLLATE utf8mb4_german2_ci NOT NULL,
@@ -128,10 +136,10 @@ CREATE TABLE `Message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
 
 --
--- Dumping data for table `Message`
+-- Dumping data for table `MESSAGE`
 --
 
-INSERT INTO `Message` (`MESSAGE_CODE`, `TEXT`, `LANG`, `ENABLED`, `CREATED_BY`, `CREATED_AT`) VALUES
+INSERT INTO `MESSAGE` (`MESSAGE_CODE`, `TEXT`, `LANG`, `ENABLED`, `CREATED_BY`, `CREATED_AT`) VALUES
 ('MSG0001', 'Quá trình lưu gặp lỗi.', 'vn', 1, 'MThien', '2021-06-28 02:02:22'),
 ('MSG0002', 'Lưu thành công', 'vn', 1, 'MThien', '2021-06-28 02:02:22'),
 ('MSG0003', 'Phone Number entered is invalid.', 'en', 1, 'xphung', '2021-07-13 19:50:25'),
@@ -152,7 +160,9 @@ INSERT INTO `Message` (`MESSAGE_CODE`, `TEXT`, `LANG`, `ENABLED`, `CREATED_BY`, 
 ('MSG0018', 'Date of Birth is required attribute when adding an User Information.', 'en', 1, 'xphung', '2021-07-13 21:02:17'),
 ('MSG0019', 'No Data Found for Sequence No. of Role: {0}.', 'en', 1, 'xphung', '2021-07-14 17:18:22'),
 ('MSG0020', '{0} is mandatory.', 'en', 1, 'MThien', '2021-09-08 02:02:22'),
-('MSG0021', '{0} must be more than {1} characters.', 'en', 1, 'MThien', '2021-09-08 02:02:22');
+('MSG0021', '{0} must be greater than or equal to {1} and less than or equal to {2} characters.', 'en', 1, 'MThien', '2021-09-08 02:02:22'),
+('MSG0022', 'The data does not exist', 'en', 1, 'xphung', '2021-09-12 11:02:37'),
+('MSG0023', '{0} must not be more than {1} characters', 'en', 1, 'xphung', '2021-10-20 15:12:23');
 
 -- --------------------------------------------------------
 
@@ -199,29 +209,29 @@ ALTER TABLE `Category`
   ADD PRIMARY KEY (`CategoryId`);
 
 --
--- Indexes for table `Common`
+-- Indexes for table `COMMON`
 --
-ALTER TABLE `Common`
+ALTER TABLE `COMMON`
   ADD PRIMARY KEY (`COMMON_CODE`,`SEQUENCE_NO`),
   ADD KEY `CommonCode` (`COMMON_CODE`);
 
 --
--- Indexes for table `Company`
+-- Indexes for table `COMPANY`
 --
-ALTER TABLE `Company`
+ALTER TABLE `COMPANY`
   ADD PRIMARY KEY (`ID_COMPANY`);
 
 --
--- Indexes for table `Label`
+-- Indexes for table `LABEL`
 --
-ALTER TABLE `Label`
+ALTER TABLE `LABEL`
   ADD PRIMARY KEY (`LABEL_CODE`),
   ADD KEY `Name` (`NAME`(191));
 
 --
--- Indexes for table `Message`
+-- Indexes for table `MESSAGE`
 --
-ALTER TABLE `Message`
+ALTER TABLE `MESSAGE`
   ADD PRIMARY KEY (`MESSAGE_CODE`),
   ADD KEY `Text` (`TEXT`(191));
 

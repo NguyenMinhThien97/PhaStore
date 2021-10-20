@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @IdClass(CommonId.class)
+@Table(name = "COMMON")
 public class Common implements Serializable {
     private static final long serialVersionUID = 1L;
 

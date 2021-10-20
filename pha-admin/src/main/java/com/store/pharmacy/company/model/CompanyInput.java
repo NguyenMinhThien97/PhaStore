@@ -20,7 +20,7 @@ public class CompanyInput {
     @Size(min = 3,max = 50, message = "MSG0021.3.50")
     private String taxCode;
 
-    @Size(max = 255, message = "MSG0022.255")
+    @Size(max = 255, message = "MSG0023.255")
     private String description;
 
     @NotBlank(message = "MSG0020")
