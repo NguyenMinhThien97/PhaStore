@@ -1,4 +1,4 @@
-package com.store.pharmacy.company.serviceImpl;
+package com.store.pharmacy.company.service.impl;
 
 import com.store.pharmacy.company.model.Company;
 import com.store.pharmacy.company.model.CompanyInput;

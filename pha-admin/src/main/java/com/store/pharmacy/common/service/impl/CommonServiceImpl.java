@@ -1,4 +1,4 @@
-package com.store.pharmacy.common.serviceImpl;
+package com.store.pharmacy.common.service.impl;
 
 import com.store.pharmacy.common.model.Common;
 import com.store.pharmacy.common.model.CommonOutput;
