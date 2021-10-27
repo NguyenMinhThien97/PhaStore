@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "label")
+@Table(name = "LABEL")
 public class Label implements Serializable {
     private static final long serialVersionUID = 1L;
 

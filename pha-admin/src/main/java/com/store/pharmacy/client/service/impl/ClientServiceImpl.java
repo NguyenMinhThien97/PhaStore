@@ -1,4 +1,4 @@
-package com.store.pharmacy.client.serviceImpl;
+package com.store.pharmacy.client.service.impl;
 
 import com.store.pharmacy.client.model.Client;
 import com.store.pharmacy.client.model.ClientInput;
