@@ -17,7 +17,61 @@ CREATE DATABASE IF NOT EXISTS `phastore` DEFAULT CHARACTER SET utf8mb4 COLLATE u
 USE `phastore`;
 -- --------------------------------------------------------
 
+DROP function IF EXISTS `generateUserId`;
+
+DROP function IF EXISTS `generateUserName`;
+
 DELIMITER $$
+CREATE FUNCTION `generateUserId`() RETURNS varchar(11) CHARSET utf8mb4
+    READS SQL DATA
+    DETERMINISTIC
+BEGIN
+SET @today = (SELECT CURRENT_DATE());
+ SET @day = (SELECT LPAD(DAYOFMONTH(@today), 2, 0));
+ SET @month = (SELECT LPAD(MONTH(@today), 2, 0));
+ SET @year = (SELECT YEAR(@today));
+ SET @userId = (SELECT CONCAT(@year, @month, @day, LPAD(1, 3, 0)));
+ SET @maxUserId = (SELECT MAX(UserId) FROM USER);
+ SET @flag = (SELECT ISNULL(NULLIF(@maxUserId,'')));
+ IF @flag = 1 THEN
+   RETURN @userId;
+ ELSE
+   SET @flag = (SELECT @userId > @maxUserId);
+   IF @flag = 1 THEN
+     RETURN @userId;
+   ELSE
+     SET @seq = (SELECT RIGHT(@maxUserId,3)) + 1;
+     SET @seq = (SELECT LPAD(@seq, 3, 0));
+     SET @dayMonthYear = (SELECT SUBSTRING(@maxUserId, 1, 8));
+     RETURN (SELECT CONCAT(@dayMonthYear, @seq));
+   END IF;
+ END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+CREATE FUNCTION `generateUserName` (`firstName` CHAR(1), `lastName` VARCHAR(255)) RETURNS VARCHAR(255) CHARSET utf8mb4
+READS SQL DATA
+    DETERMINISTIC
+BEGIN
+ SET @count = 0;
+ SET @userName = (SELECT CONCAT('PHA-US-', firstName, lastName));
+ label1: LOOP
+ SET @isExitedUserName = (SELECT UserName FROM User WHERE UserName = @userName);
+      IF ISNULL(NULLIF(@isExitedUserName,'')) = 0 THEN
+      SET @count = @count + 1;
+      SET @userName = (SELECT CONCAT('PHA-US-', firstName, lastName, @count));
+      SET @isExitedUserName = @userName;
+        ITERATE label1;
+      END IF;
+      LEAVE label1;
+    END LOOP label1;
+ RETURN (SELECT UPPER(@userName));
+ END$$
+
+DELIMITER ;
+
 --
 -- Table structure for table `Category`
 --
@@ -258,7 +312,7 @@ CREATE TABLE `client` (
   `UPDATED_BY` varchar(255) DEFAULT NULL,
   `USER_NAME` varchar(100) NOT NULL,
   PRIMARY KEY (`ID_CLIENT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 COMMIT;
 
