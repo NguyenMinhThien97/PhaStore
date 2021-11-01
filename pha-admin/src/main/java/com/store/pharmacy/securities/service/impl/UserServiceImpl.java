@@ -1,233 +1,186 @@
 package com.store.pharmacy.securities.service.impl;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.apache.commons.lang3.StringUtils;
-
 import com.store.pharmacy.common.model.Common;
 import com.store.pharmacy.common.repository.CommonRepository;
 import com.store.pharmacy.exception.DataNotFoundException;
 import com.store.pharmacy.exception.DuplicateDataException;
 import com.store.pharmacy.securities.model.User;
-import com.store.pharmacy.securities.model.UserDTO;
+import com.store.pharmacy.securities.model.UserInput;
+import com.store.pharmacy.securities.model.UserOutput;
 import com.store.pharmacy.securities.repository.UserRepository;
 import com.store.pharmacy.securities.service.UserService;
 import com.store.pharmacy.utils.ExecContext;
 import com.store.pharmacy.utils.PharmacyConstant;
 import com.store.pharmacy.utils.Utils;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Optional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private ExecContext execContext;
+    private final ExecContext execContext;
 
-	@Autowired
-	private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private CommonRepository commonRepository;
+    private final CommonRepository commonRepository;
 
-	@Override
-	@Transactional
-	public String save(UserDTO userDTO) {
-		String[] firstName = userDTO.getFirstName().split(" ");
-		String userName = userRepository.generateUserName(firstName[firstName.length - 1].charAt(0),
-				userDTO.getLastName());
-		userDTO.setUserName(userName);
-		LocalDate dateOfBirth = userDTO.getDateOfBirth();
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(dateOfBirth.getYear());
-		stringBuilder.append(StringUtils.leftPad(String.valueOf(dateOfBirth.getMonthValue()), 2, "0"));
-		stringBuilder.append(StringUtils.leftPad(String.valueOf(dateOfBirth.getDayOfMonth()), 2, "0"));
-		String password = passwordEncoder.encode(stringBuilder.toString());
-		String userId = userRepository.generateUserId();
-		Common common = commonRepository.findByCommonCodeAndName(PharmacyConstant.ROLE_USER,
-				userDTO.getRoleName().trim());
-		if (common == null) {
-			throw new DataNotFoundException("MSG0016", new Object[] { userDTO.getRoleName().trim() });
-		}
-		User user = mapUserDTOToUser(userDTO, userId, common.getSequenceNo(), userName.trim(), password);
-		userRepository.saveAndFlush(user);
-		return userId;
-	}
+    private final ModelMapper modelMapper;
 
-	@Override
-	public void update(String userId, UserDTO userDTO) {
-		User user = userRepository.findById(userId).orElse(null);
+    @Override
+    public UserOutput save(UserInput userInput) {
+        String userName = userInput.getUserName();
+        if (userName == null || userName.isEmpty()) {
+            String[] firstName = userInput.getFirstName().split(" ");
+            userName = userRepository.generateUserName(firstName[firstName.length - 1].charAt(0),
+                    userInput.getLastName());
+        }
+        userInput.setUserName(userName);
+        LocalDate dateOfBirth = Utils.formatDateOfBirth(userInput.getDateOfBirth());
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(dateOfBirth.getYear());
+        stringBuilder.append(StringUtils.leftPad(String.valueOf(dateOfBirth.getMonthValue()), 2, "0"));
+        stringBuilder.append(StringUtils.leftPad(String.valueOf(dateOfBirth.getDayOfMonth()), 2, "0"));
+        String password = passwordEncoder.encode(stringBuilder.toString());
+        String userId = userRepository.generateUserId();
+        Common common = Optional.of(commonRepository.findByCommonCodeAndName(PharmacyConstant.ROLE_USER,
+                userInput.getRoleName().trim())).orElseThrow(() -> new DataNotFoundException("MSG0016", new Object[]{userInput.getRoleName().trim()}));
+        User user = convertUserInputToUser(userInput, userId, common.getSequenceNo(), userName.trim(), password);
+        userRepository.saveAndFlush(user);
+        return convertUserToUserOuput(user);
+    }
 
-		if (userDTO.getRoleName() != null) {
-			Common common = commonRepository.findByCommonCodeAndName(PharmacyConstant.ROLE_USER,
-					userDTO.getRoleName().trim());
-			if (common == null) {
-				throw new DataNotFoundException("MSG0016", new Object[] { userDTO.getRoleName().trim() });
-			}
-			if (user.getRoleCode() != common.getSequenceNo()) {
-				user.setRoleCode(common.getSequenceNo());
-			} else {
-				common = commonRepository.findByCommonCodeAndSequenceNo(PharmacyConstant.ROLE_USER,
-						user.getRoleCode());
-				if (common == null) {
-					throw new DataNotFoundException("MSG0016", new Object[] { userDTO.getRoleName().trim() });
-				}
-				userDTO.setRoleName(common.getName());
-			}
-		}
+    @Override
+    public UserOutput update(String userId, UserInput userInput) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (userInput.getRoleName() != null) {
+            Common common = Optional.of(commonRepository.findByCommonCodeAndName(PharmacyConstant.ROLE_USER,
+                    userInput.getRoleName().trim())).orElseThrow(() -> new DataNotFoundException("MSG0016", new Object[]{userInput.getRoleName().trim()}));
+            if (user.getRoleCode() != common.getSequenceNo()) {
+                user.setRoleCode(common.getSequenceNo());
+            } else {
+                common = Optional.of(commonRepository.findByCommonCodeAndSequenceNo(PharmacyConstant.ROLE_USER,
+                        user.getRoleCode())).orElseThrow(() -> new DataNotFoundException("MSG0016", new Object[]{userInput.getRoleName().trim()}));
+                userInput.setRoleName(common.getName());
+            }
+        }
+        if (userInput.getFirstName() != null && !userInput.getFirstName().trim().isEmpty()) {
+            user.setFirstName(userInput.getFirstName());
+        } else {
+            userInput.setFirstName(user.getFirstName());
+        }
+        if (userInput.getLastName() != null && !userInput.getLastName().trim().isEmpty()) {
+            user.setLastName(userInput.getLastName());
+        } else {
+            userInput.setLastName(user.getLastName());
+        }
+        if (userInput.getUserName() != null && !userInput.getUserName().trim().isEmpty()) {
+            user.setUserName(userInput.getUserName());
+        } else {
+            userInput.setUserName(user.getUserName());
+        }
+        if (userInput.getEmail() != null && !userInput.getEmail().trim().isEmpty()) {
+            user.setEmail(userInput.getEmail());
+        } else {
+            userInput.setEmail(user.getEmail());
+        }
+        if (userInput.getDateOfBirth() != null) {
+            user.setDateOfBirth(Utils.formatDateOfBirth(userInput.getDateOfBirth()));
+        } else {
+            userInput.setDateOfBirth(user.getDateOfBirth().toString());
+        }
+        if (userInput.getPhoneNumber() != null && !userInput.getPhoneNumber().trim().isEmpty()) {
+            user.setPhoneNumber(userInput.getPhoneNumber());
+        } else {
+            userInput.setPhoneNumber(user.getPhoneNumber());
+        }
+        if (userInput.getAddress() != null && !userInput.getAddress().trim().isEmpty()) {
+            user.setAddress(userInput.getAddress());
+        } else {
+            userInput.setAddress(user.getAddress());
+        }
+        if (userInput.getEnabled() != null) {
+            user.setEnabled(userInput.getEnabled());
+        } else {
+            userInput.setEnabled(user.isEnabled());
+        }
+        if (userInput.getNewPassword() != null && userInput.getCurrentPassword() != null) {
+            boolean isPasswordMatches = passwordEncoder.matches(userInput.getCurrentPassword(), user.getPassword());
+            if (isPasswordMatches) {
+                user.setPassword(passwordEncoder.encode(userInput.getNewPassword()));
+            }
+        }
+        if (execContext.getUserId() != null) {
+            user.setUpdatedBy(execContext.getUserId());
+        }
+        user.setUpdatedAt(LocalDateTime.now(ZoneId.of(Utils.getTimeZone())));
+        userRepository.save(user);
+        return convertUserToUserOuput(user);
+    }
 
-		if (userDTO.getFirstName() != null) {
-			user.setFirstName(userDTO.getFirstName());
-		} else {
-			userDTO.setFirstName(user.getFirstName());
-		}
+    @Override
+    public UserOutput findUser(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("MSG0011", new Object[]{userId}));
+        return convertUserToUserOuput(user);
+    }
 
-		if (userDTO.getLastName() != null) {
-			user.setLastName(userDTO.getLastName());
-		} else {
-			userDTO.setLastName(user.getLastName());
-		}
+    private UserOutput convertUserToUserOuput(User user) {
+        Common common = Optional.of(commonRepository.findByCommonCodeAndSequenceNo(PharmacyConstant.ROLE_USER,
+                user.getRoleCode())).orElseThrow(() -> new DataNotFoundException("MSG0019", new Object[]{user.getRoleCode()}));
+        UserOutput userOutput = modelMapper.map(user, UserOutput.class);
+        userOutput.setRoleName(common.getName());
+        return userOutput;
+    }
 
-		if (userDTO.getUserName() != null) {
-			user.setUserName(userDTO.getUserName());
-		} else {
-			userDTO.setUserName(user.getUserName());
-		}
+    private User convertUserInputToUser(UserInput userInput, String userId, int sequenceNo, String userName, String password) {
+        User user = new User();
+        user.setUserId(userId);
+        user.setUserName(userName);
+        user.setPassword(password);
+        user.setRoleCode(sequenceNo);
+        user.setEmail(userInput.getEmail());
+        user.setAddress(userInput.getAddress());
+        user.setLastName(userInput.getLastName());
+        user.setFirstName(userInput.getFirstName());
+        user.setDateOfBirth(Utils.formatDateOfBirth(userInput.getDateOfBirth()));
+        user.setPhoneNumber(userInput.getPhoneNumber());
+        user.setCreateAt(LocalDateTime.now(ZoneId.of(Utils.getTimeZone())));
+        if (execContext.getUserId() != null && !execContext.getUserId().isEmpty()) {
+            user.setCreateBy(execContext.getUserId());
+        }
+        if (userInput.getEnabled() != null && !userInput.getEnabled()) {
+            user.setEnabled(userInput.getEnabled());
+        } else {
+            user.setEnabled(true);
+            userInput.setEnabled(true);
+        }
+        return user;
+    }
 
-		if (userDTO.getEmail() != null) {
-			user.setEmail(userDTO.getEmail());
-		} else {
-			userDTO.setEmail(user.getEmail());
-		}
+    @Override
+    public void checkIfDuplicatedUser(UserInput userInput) {
+        if (userInput.getUserName() != null && userRepository.findUserByUserName(userInput.getUserName()) != null) {
+            throw new DuplicateDataException("MSG0010", new Object[]{userInput.getUserName()});
+        }
+        if (userInput.getEmail() != null && userRepository.findUserByEmail(userInput.getEmail()) != null) {
+            throw new DuplicateDataException("MSG0008", new Object[]{userInput.getEmail()});
+        }
+    }
 
-		if (userDTO.getDateOfBirth() != null) {
-			user.setDateOfBirth(userDTO.getDateOfBirth());
-		} else {
-			userDTO.setDateOfBirth(user.getDateOfBirth());
-		}
-
-		if (userDTO.getPhoneNumber() != null) {
-			user.setPhoneNumber(userDTO.getPhoneNumber());
-		} else {
-			userDTO.setPhoneNumber(user.getPhoneNumber());
-		}
-
-		if (userDTO.getAddress() != null) {
-			user.setAddress(userDTO.getAddress());
-		} else {
-			userDTO.setAddress(user.getAddress());
-		}
-
-		if (userDTO.getEnabled() != null) {
-			user.setEnabled(userDTO.getEnabled());
-		} else {
-			userDTO.setEnabled(user.isEnabled());
-		}
-
-		if (userDTO.getNewPassword() != null && userDTO.getCurrentPassword() != null) {
-			boolean isPasswordMatches = passwordEncoder.matches(userDTO.getCurrentPassword(), user.getPassword());
-			if (isPasswordMatches) {
-				user.setPassword(passwordEncoder.encode(userDTO.getNewPassword()));
-			}
-		}
-
-		if (execContext.getUserId() != null) {
-			user.setUpdatedBy(execContext.getUserId());
-		}
-		user.setUpdatedAt(LocalDateTime.now(ZoneId.of(Utils.getTimeZone())));
-		userRepository.save(user);
-	}
-
-	@Override
-	public UserDTO findUser(String userId) {
-		User user = userRepository.findById(userId).orElse(null);
-		if (user == null) {
-			throw new DataNotFoundException("MSG0011", new Object[] { userId });
-		}
-		UserDTO userDTO = mapUserToUserDTO(user);
-		return userDTO;
-	}
-
-	private UserDTO mapUserToUserDTO(User user) {
-		UserDTO userDTO = new UserDTO();
-		userDTO.setEnabled(user.isEnabled());
-		userDTO.setUserName(user.getUserName());
-		userDTO.setLastName(user.getLastName());
-		userDTO.setFirstName(user.getFirstName());
-		userDTO.setDateOfBirth(user.getDateOfBirth());
-		userDTO.setPhoneNumber(user.getPhoneNumber());
-		if (user.getEmail() != null && !user.getEmail().isEmpty()) {
-			userDTO.setEmail(user.getEmail());
-		}
-		if (user.getAddress() != null && !user.getAddress().isEmpty()) {
-			userDTO.setAddress(user.getAddress());
-		}
-		Common common = commonRepository.findByCommonCodeAndSequenceNo(PharmacyConstant.ROLE_USER,
-				user.getRoleCode());
-		if (common == null) {
-			throw new DataNotFoundException("MSG0019", new Object[] { user.getRoleCode() });
-		}
-		userDTO.setRoleName(common.getName());
-		return userDTO;
-	}
-
-	private User mapUserDTOToUser(UserDTO userDTO, String userId, int sequenceNo, String userName, String password) {
-		User user = new User();
-		user.setUserId(userId);
-		user.setUserName(userName);
-		user.setPassword(password);
-		user.setRoleCode(sequenceNo);
-		user.setEmail(userDTO.getEmail());
-		user.setAddress(userDTO.getAddress());
-		user.setLastName(userDTO.getLastName());
-		user.setFirstName(userDTO.getFirstName());
-		user.setDateOfBirth(userDTO.getDateOfBirth());
-		user.setPhoneNumber(userDTO.getPhoneNumber());
-		user.setCreateAt(LocalDateTime.now(ZoneId.of(Utils.getTimeZone())));
-		if (execContext.getUserId() != null && !execContext.getUserId().isEmpty()) {
-			user.setCreateBy(execContext.getUserId());
-		}
-		if (userDTO.getEnabled() != null && !userDTO.getEnabled()) {
-			user.setEnabled(userDTO.getEnabled());
-		} else {
-			user.setEnabled(true);
-			userDTO.setEnabled(true);
-		}
-		return user;
-	}
-
-	@Override
-	public void checkIfDuplicatedUserName(String userName) throws DuplicateDataException {
-		if (userName != null && userRepository.findUserByUserName(userName) != null) {
-			throw new DuplicateDataException("MSG0010", new Object[] { userName });
-		}
-	}
-
-	@Override
-	public void checkIfDuplicatedUserEmail(String email) throws DuplicateDataException {
-		if (email != null && userRepository.findUserByEmail(email) != null) {
-			throw new DuplicateDataException("MSG0008", new Object[] { email });
-		}
-	}
-
-	@Override
-	public void checkIfDuplicatedUser(UserDTO userDTO) {
-		checkIfDuplicatedUserEmail(userDTO.getEmail());
-		checkIfDuplicatedUserName(userDTO.getUserName());
-	}
-
-	@Override
-	public void checkIfUserExits(String userId) {
-		if (userRepository.findById(userId).orElse(null) == null) {
-			throw new DataNotFoundException("MSG0011", new Object[] { userId });
-		}
-	}
+    @Override
+    public void checkIfUserExits(String userId) {
+        userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("MSG0011", new Object[]{userId}));
+    }
 }

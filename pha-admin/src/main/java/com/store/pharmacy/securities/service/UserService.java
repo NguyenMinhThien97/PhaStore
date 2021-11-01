@@ -1,21 +1,18 @@
 package com.store.pharmacy.securities.service;
 
-import com.store.pharmacy.securities.model.UserDTO;
+import com.store.pharmacy.securities.model.UserInput;
+import com.store.pharmacy.securities.model.UserOutput;
 
 public interface UserService {
 
-	public String save(UserDTO user);
+    UserOutput save(UserInput userInput);
 
-	public UserDTO findUser(String userId);
+    UserOutput findUser(String userId);
 
-	public void update(String userId, UserDTO userDTO);
+    UserOutput update(String userId, UserInput UserInput);
 
-	public void checkIfDuplicatedUserName(String userName);
+    void checkIfDuplicatedUser(UserInput userInput);
 
-	public void checkIfDuplicatedUserEmail(String userName);
-
-	public void checkIfDuplicatedUser(UserDTO userDTO);
-
-	public void checkIfUserExits(String userId);
+    void checkIfUserExits(String userId);
 
 }
