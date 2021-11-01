@@ -1,6 +1,7 @@
 package com.store.pharmacy.client.validation;
 
 import com.store.pharmacy.utils.Formatter;
+import com.store.pharmacy.utils.Utils;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.validation.Constraint;
@@ -30,10 +31,9 @@ class BirthdayValidator implements ConstraintValidator<ValidBirthday, String> {
 
     @Override
     public boolean isValid(String birthday, ConstraintValidatorContext context) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
         if (birthday != null) {
             try {
-                LocalDate birthdayFormat = LocalDate.parse(birthday, dtf);
+                LocalDate birthdayFormat = Utils.formatDateOfBirth(birthday);
                 if (!Formatter.isValidDateOfBirth(birthdayFormat)) {
                     return false;
                 }

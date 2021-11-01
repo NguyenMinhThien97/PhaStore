@@ -1,22 +1,21 @@
 package com.store.pharmacy.securities.repository;
 
+import com.store.pharmacy.securities.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.store.pharmacy.securities.model.User;
-
 public interface UserRepository extends JpaRepository<User, String> {
 
-	public User findUserByUserId(String userId);
-	
-	public User findUserByUserName(String userName);
+    User findUserByUserId(String userId);
 
-	public User findUserByEmail(String email);
+    User findUserByUserName(String userName);
 
-	@Query(value = "SELECT generateUserId()", nativeQuery = true)
-	public String generateUserId();
+    User findUserByEmail(String email);
 
-	@Query(value = "SELECT generateUserName(:firstName, :lastName)", nativeQuery = true)
-	public String generateUserName(@Param("firstName") Character firstName, @Param("lastName") String lastName);
+    @Query(value = "SELECT generateUserId()", nativeQuery = true)
+    String generateUserId();
+
+    @Query(value = "SELECT generateUserName(:firstName, :lastName)", nativeQuery = true)
+    String generateUserName(@Param("firstName") Character firstName, @Param("lastName") String lastName);
 }
