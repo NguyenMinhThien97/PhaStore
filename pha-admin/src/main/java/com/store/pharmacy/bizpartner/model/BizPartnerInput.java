@@ -23,7 +23,6 @@ public class BizPartnerInput {
     private String taxCode;
 
     @NotBlank(message = "MSG0020" )
-    @Value("123")
     private String bizTypeCode ;
 
     private String country;
