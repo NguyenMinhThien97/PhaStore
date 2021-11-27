@@ -15,7 +15,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
-public class SpringMailConfig implements ApplicationContextAware, EnvironmentAware {
+public class SpringMailConfig implements ApplicationContextAware {
 
 
     @Bean
@@ -35,7 +35,7 @@ public class SpringMailConfig implements ApplicationContextAware, EnvironmentAwa
         return templateEngine;
     }
 
-//cau hinh va doc file html
+    //config and read html file
     private ITemplateResolver htmlTemplateResolver() {
         final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setOrder(Integer.valueOf(1));
@@ -52,8 +52,4 @@ public class SpringMailConfig implements ApplicationContextAware, EnvironmentAwa
 
     }
 
-    @Override
-    public void setEnvironment(Environment environment) {
-
-    }
 }
