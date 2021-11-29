@@ -10,8 +10,11 @@ import com.store.pharmacy.common.service.LabelService;
 import com.store.pharmacy.exception.DataNotFoundException;
 import com.store.pharmacy.utils.BizPartnerConstant;
 
+import com.store.pharmacy.utils.PharmacyConstant;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +36,6 @@ public class BizPartnerServiceImpl implements BizPartnerService {
 
 	@Autowired
 	private LabelService labelService;
-	private final String INSERT = "INSERT";
-	private final String UPDATE = "UPDATE";
-	private final String SEARCH = "SEARCH";
 
 
 	/**
@@ -52,15 +52,9 @@ public class BizPartnerServiceImpl implements BizPartnerService {
 
 		//Check condition
 		//++Check null
-		if (bizPartnerName == null || bizPartnerName.isEmpty())
-			throw new DataNotFoundException("MSG0020" ,new Object[] {labelService.findByExactLabelCodes("C005","en")});
-		if (bizTypeCode == null    ||  bizTypeCode.isEmpty() )
-			throw new DataNotFoundException("MSG0020" ,new Object[] {labelService.findByExactLabelCodes("C006","en")});
 		if (sortBy == null         || sortBy.isEmpty())
 			sortBy = "createdAt";
 
-		//++Check exist
-		checkBizTypeCode(bizTypeCode);
 
 		//Get
 		List<BizPartner> bizPartnerList = bizPartnerRepository.findAllByBizPartnerNameAndBizTypeCodeAndEnabled(bizPartnerName, bizTypeCode,enabled, Sort.by(sortBy));
@@ -70,7 +64,7 @@ public class BizPartnerServiceImpl implements BizPartnerService {
 		}
 
 		for ( BizPartner bizPartnerInList : bizPartnerList){
-			bizPartnerOutputList.add(convertBizPartnerToBizPartnerOutput(bizPartnerInList, "SEARCH"));
+			bizPartnerOutputList.add(convertBizPartnerToBizPartnerOutput(bizPartnerInList, PharmacyConstant.FETCH));
 		}
 		return bizPartnerOutputList;
 	}
@@ -82,13 +76,8 @@ public class BizPartnerServiceImpl implements BizPartnerService {
 	 * @return
 	 */
 	public BizPartnerInput convertBizPartnerToBizPartnerInput ( BizPartner bizPartner , String action ){
-		BizPartnerInput bizPartnerInput = new BizPartnerInput();
-
-		String bizTypeCode = getBizTypeCodeName(bizPartner.getBizTypeCode().trim());
-		String status = getStatus(bizPartner.getStatus().trim());
-
-		bizPartnerInput.setBizTypeCode(bizTypeCode);
-		bizPartnerInput.setStatus(status);
+		ModelMapper modelMapper = new ModelMapper();
+		BizPartnerInput bizPartnerInput = modelMapper.map(bizPartner, BizPartnerInput.class);
 		return bizPartnerInput;
 	}
 
@@ -99,46 +88,26 @@ public class BizPartnerServiceImpl implements BizPartnerService {
 	 * @return
 	 */
 	public BizPartner convertBizPartnerInputToBizPartner(BizPartnerInput bizPartnerInput,  String action){
-		BizPartner bizPartner = new BizPartner();
-
+		ModelMapper modelMapper = new ModelMapper();
+		BizPartner bizPartner = modelMapper.map(bizPartnerInput, BizPartner.class);
 		LocalDate today = LocalDate.now();
-		if (action.equals(INSERT)){
-			bizPartner.setBizPartnerName(bizPartnerInput.getBizPartnerName());
-			bizPartner.setTaxCode((bizPartnerInput.getTaxCode()));
-			bizPartner.setBizTypeCode(bizPartnerInput.getBizTypeCode());
-			bizPartner.setCountry(bizPartnerInput.getCountry());
-			bizPartner.setAddress(bizPartnerInput.getAddress());
-			bizPartner.setEmail(bizPartnerInput.getEmail());
-			bizPartner.setPhoneNumber(bizPartnerInput.getPhoneNumber());
-			bizPartner.setDescription(bizPartnerInput.getDescription());
-			bizPartner.setCreatedBy(bizPartnerInput.getUserId());
+		if (action.equals(PharmacyConstant.INSERT)){
 			bizPartner.setCreatedAt(today);
-			bizPartner.setStatus(bizPartnerInput.getStatus());
-			bizPartner.setEnabled(bizPartnerInput.getEnabled());
+			bizPartner.setUpdatedAt(today);
 		}
 		return bizPartner;
 
 	}
 
 	public BizPartnerOutput convertBizPartnerToBizPartnerOutput(BizPartner bizPartner,  String action){
-		BizPartnerOutput bizPartnerOutput = new BizPartnerOutput();
+		ModelMapper modelMapper = new ModelMapper();
+		BizPartnerOutput bizPartnerOutput = modelMapper.map(bizPartner, BizPartnerOutput.class);
 
-		bizPartnerOutput.setBizPartnerId(bizPartner.getBizPartnerId());
-		bizPartnerOutput.setBizPartnerName(bizPartner.getBizPartnerName());
-		bizPartnerOutput.setTaxCode(bizPartner.getTaxCode());
-		bizPartnerOutput.setBizTypeCode(bizPartner.getBizTypeCode());
-		bizPartnerOutput.setCountry(bizPartner.getCountry());
-		bizPartnerOutput.setAddress(bizPartner.getAddress());
-		bizPartnerOutput.setEmail(bizPartner.getEmail());
-		bizPartnerOutput.setPhoneNumber(bizPartner.getPhoneNumber());
-		bizPartnerOutput.setDescription(bizPartner.getDescription());
-		bizPartnerOutput.setEnabled(bizPartner.getEnabled());
-
-		if (action.equals(INSERT)){
+		if (action.equals(PharmacyConstant.INSERT)){
 			bizPartnerOutput.setUpdateBy(bizPartner.getCreatedBy());
 			bizPartnerOutput.setUpdateAt(bizPartner.getUpdatedAt());
 		}
-		else if (action.equals(UPDATE) || action.equals(SEARCH) ){
+		else if (action.equals(PharmacyConstant.UPDATE) || action.equals(PharmacyConstant.FETCH) ){
 			bizPartnerOutput.setUpdateBy(bizPartner.getUpdatedBy());
 			bizPartnerOutput.setUpdateAt(bizPartner.getUpdatedAt());
 		}
@@ -167,16 +136,6 @@ public class BizPartnerServiceImpl implements BizPartnerService {
 		if (common == null)
 			return "";
 		return common.getName();
-	}
-	/**
-	 *
-	 * @param input
-	 * @return
-	 */
-	public boolean checkBizTypeCode (String input ){
-		if (!input.equals(getBizTypeCodeName(input))  )
-			throw new DataNotFoundException("MSG0025" ,new Object[] {labelService.findByExactLabelCodes("C006","en")});
-		return true;
 	}
 
 	/**

@@ -19,9 +19,9 @@ public class BizPartnerController {
 	@GetMapping(value = {"/"
 			, "/{bizPartnerName}/{enabled}/{bizTypeCode}"})
 	public ResponseEntity<List<BizPartnerOutput>> findBizPartner(
-			@PathVariable(value = "bizPartnerName", required = false) String bizPartnerName,
-			@PathVariable(value = "bizTypeCode", required = false) String bizTypeCode,
-			@PathVariable(value = "enabled") boolean enabled,
+			@RequestParam(value = "bizPartnerName", required = false) String bizPartnerName,
+			@RequestParam(value = "bizTypeCode", required = false) String bizTypeCode,
+			@RequestParam(value = "enabled", required = false) boolean enabled,
 			@RequestParam(value = "sortBy", required = false) String sortBy) {
 		List<BizPartnerOutput> outParam = bizPartnerService.findBizPartnerByName(bizPartnerName, bizTypeCode, enabled, sortBy);
 		return new ResponseEntity<List<BizPartnerOutput>>(outParam, HttpStatus.OK);
