@@ -4,6 +4,8 @@ import com.store.pharmacy.common.model.*;
 import com.store.pharmacy.common.service.CommonService;
 import com.store.pharmacy.common.service.LabelService;
 import com.store.pharmacy.common.service.MessageService;
+import com.store.pharmacy.common.service.SendMailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +18,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/common")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class CommonController {
-    @Autowired
-    private CommonService commonService;
 
-    @Autowired
-    private LabelService labelService;
-
-    @Autowired
-    private MessageService messageService;
+    private final CommonService commonService;
+    private final LabelService labelService;
+    private final MessageService messageService;
+    private final SendMailService sendMailService;
 
     @GetMapping("/{commonCode}/{Lang}")
     public ResponseEntity<List<CommonOutput>> findCommon(@PathVariable("commonCode") String commonCode, @PathVariable("lang") String lang){
@@ -42,5 +42,16 @@ public class CommonController {
     public ResponseEntity<MessageOutput> findMessage(@PathVariable("messageCode") String messageCode, @PathVariable("lang") String lang){
         MessageOutput outParam = messageService.getByMessageCode(messageCode, lang);
         return new ResponseEntity<>(outParam, HttpStatus.OK);
+    }
+
+    // just test for function sendMail
+    @GetMapping("/sendEmail")
+    public ResponseEntity<Boolean> sendEmail(
+        @RequestParam("subject") String subject,
+        @RequestParam("templateName") String templateName,
+        @RequestParam("mailReceiver") String mailReceiver
+    ){
+        boolean result = sendMailService.sendMail(subject, templateName, mailReceiver);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
