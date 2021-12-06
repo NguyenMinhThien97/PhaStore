@@ -1,6 +1,6 @@
 package com.store.pharmacy.bizpartner.service;
 
-import com.store.pharmacy.bizpartner.model.BizPartnerInput;
+
 import com.store.pharmacy.bizpartner.model.BizPartnerOutput;
 import org.springframework.stereotype.Service;
 

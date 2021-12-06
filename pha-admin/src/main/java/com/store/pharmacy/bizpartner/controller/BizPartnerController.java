@@ -16,8 +16,7 @@ public class BizPartnerController {
 	@Autowired
 	BizPartnerService bizPartnerService;
 
-	@GetMapping(value = {"/"
-			, "/{bizPartnerName}/{enabled}/{bizTypeCode}"})
+	@GetMapping(value = {"/"})
 	public ResponseEntity<List<BizPartnerOutput>> findBizPartner(
 			@RequestParam(value = "bizPartnerName", required = false) String bizPartnerName,
 			@RequestParam(value = "bizTypeCode", required = false) String bizTypeCode,
