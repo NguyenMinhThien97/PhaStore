@@ -38,4 +38,10 @@ public class LabelServiceImpl implements LabelService {
         }
         return outputParams;
     }
+
+    @Override
+    public String findByExactLabelCodes(String labelcode, String lang){
+        Label label = labelRepository.findByLabelCodeAndLang(labelcode, lang);
+        return label.getName();
+    }
 }

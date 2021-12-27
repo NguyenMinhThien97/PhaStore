@@ -30,8 +30,8 @@ SET @today = (SELECT CURRENT_DATE());
  SET @day = (SELECT LPAD(DAYOFMONTH(@today), 2, 0));
  SET @month = (SELECT LPAD(MONTH(@today), 2, 0));
  SET @year = (SELECT YEAR(@today));
- SET @userId = (SELECT CONCAT(@year, @month, @day, LPAD(1, 3, 0)));
- SET @maxUserId = (SELECT MAX(UserId) FROM USER);
+ SET @userId = (SELECT CONCAT(@year, @month, @day, LPAD(1, 3, 0)) COLLATE utf8mb4_german2_ci);
+ SET @maxUserId = (SELECT MAX(USER_ID) FROM USER);
  SET @flag = (SELECT ISNULL(NULLIF(@maxUserId,'')));
  IF @flag = 1 THEN
    RETURN @userId;
@@ -58,7 +58,7 @@ BEGIN
  SET @count = 0;
  SET @userName = (SELECT CONCAT('PHA-US-', firstName, lastName));
  label1: LOOP
- SET @isExitedUserName = (SELECT UserName FROM User WHERE UserName = @userName);
+ SET @isExitedUserName = (SELECT USER_NAME FROM USER WHERE USER_NAME = @userName);
       IF ISNULL(NULLIF(@isExitedUserName,'')) = 0 THEN
       SET @count = @count + 1;
       SET @userName = (SELECT CONCAT('PHA-US-', firstName, lastName, @count));
@@ -221,32 +221,32 @@ INSERT INTO `MESSAGE` (`MESSAGE_CODE`, `TEXT`, `LANG`, `ENABLED`, `CREATED_BY`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `User`
+-- Table structure for table `USER`
 --
 
-CREATE TABLE `User` (
-  `UserId` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
-  `RoleCode` int NOT NULL,
-  `FirstName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
-  `LastName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
-  `UserName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
-  `Email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  `DateOfBirth` date NOT NULL,
-  `PhoneNumber` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
-  `Address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  `Password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
-  `Enabled` tinyint(1) DEFAULT '1',
-  `CreatedBy` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  `CreatedAt` datetime NOT NULL,
-  `UpdatedBy` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
-  `UpdatedAt` datetime DEFAULT NULL
+CREATE TABLE `USER` (
+  `USER_ID` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
+  `ROLE_CODE` int NOT NULL,
+  `FIRST_NAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
+  `LAST_NAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
+  `USER_NAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
+  `EMAIL` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `DATE_OF_BIRTH` date NOT NULL,
+  `PHONE_NUMBER` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
+  `ADDRESS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `PASSWORD` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci NOT NULL,
+  `ENABLED` tinyint(1) DEFAULT '1',
+  `CREATED_BY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `CREATED_AT` datetime NOT NULL,
+  `UPDATED_BY` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_german2_ci DEFAULT NULL,
+  `UPDATED_AT` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_german2_ci;
 
 --
--- Dumping data for table `User`
+-- Dumping data for table `USER`
 --
 
-INSERT INTO `User` (`UserId`, `RoleCode`, `FirstName`, `LastName`, `UserName`, `Email`, `DateOfBirth`, `PhoneNumber`, `Address`, `Password`, `Enabled`, `CreatedBy`, `CreatedAt`, `UpdatedBy`, `UpdatedAt`) VALUES
+INSERT INTO `USER` (`USER_ID`, `ROLE_CODE`, `FIRST_NAME`, `LAST_NAME`, `USER_NAME`, `EMAIL`, `DATE_OF_BIRTH`, `PHONE_NUMBER`, `ADDRESS`, `PASSWORD`, `ENABLED`, `CREATED_BY`, `CREATED_AT`, `UPDATED_BY`, `UPDATED_AT`) VALUES
 ('20210715001', 2, 'Bom', 'Park', 'ParkBomBom', 'parkbomnom@gmail.com', '1984-03-24', '0794466213', 'ABC DEF', '$2a$10$cWrlrvHSJsL1EGNBDbS/l.9a/OZLoAr3eZ80jhjuAqiupdem00lK2', 1, NULL, '2021-07-15 20:09:52', NULL, '2021-07-15 20:32:58'),
 ('20210715002', 1, 'Jennie', 'Kim', 'PHA-US-JKIM1', 'jenniekim@gmail.com', '1996-01-16', '0901671526', 'GHI KLM', '$2a$10$af4KztAZzIabJgZUSctdou.VLFNCf5nllvxkY9U4Sge5ynVnvn6lS', 1, NULL, '2021-07-15 20:10:38', NULL, '2021-07-15 20:40:55'),
 ('20210715003', 1, 'Chae Young', 'Park', 'PHA-US-YPARK', 'chaeyoungpark@gmail.com', '1997-02-11', '0801457895', 'ABC DEF', '$2a$10$YQlpkA0UnAT2TFOsRR07Oe1hsOmaPoc2L20fRTdAKbOt8XvqdUfHO', 1, NULL, '2021-07-15 20:10:57', NULL, '2021-07-15 20:53:12'),
@@ -290,10 +290,11 @@ ALTER TABLE `MESSAGE`
   ADD KEY `Text` (`TEXT`(191));
 
 --
--- Indexes for table `User`
+-- Indexes for table `USER`
 --
-ALTER TABLE `User`
-  ADD PRIMARY KEY (`UserId`);
+ALTER TABLE `USER`
+  ADD PRIMARY KEY (`USER_ID`);
+
 
 CREATE TABLE `client` (
   `ID_CLIENT` varchar(11) NOT NULL,
